@@ -1,0 +1,26 @@
+# Dependencies
+node_modules
+
+# Next.js build output
+.next
+out
+
+# Environment variables
+.env
+.env.local
+.env.production
+
+# Generated files
+/src/generated/prisma
+*.db
+*.db-journal
+*.tsbuildinfo
+
+# Logs and temporary files
+*.log
+*.txt
+*.js.map
+temp_*
+177015379899*
+build_logs.txt
+dev.db
