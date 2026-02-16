@@ -1,0 +1,59 @@
+export const dynamic = 'force-dynamic';
+
+import HeroSlider from '@/components/HeroSlider';
+import CampaignSection from '@/components/CampaignSection';
+import BlogPreviewSection from '@/components/BlogPreviewSection';
+
+export default async function ServicesPage() {
+    return (
+        <>
+            <HeroSlider />
+            <CampaignSection />
+
+            {/* Services Section */}
+            <section className="container py-12">
+                <div className="flex justify-between items-center mb-8">
+                    <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                        Hizmetlerimiz
+                    </h2>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Web Design Card */}
+                    <div className="campaign-card" style={{ backgroundColor: '#f3e8ff', border: '1px solid #d8b4fe' }}>
+                        <span className="campaign-label" style={{ backgroundColor: '#9333ea' }}>
+                            WEB TASARIM
+                        </span>
+                        <h3 className="campaign-title" style={{ color: '#581c87' }}>
+                            Web Tasarım &<br />Yazılım Hizmetleri
+                        </h3>
+                        <p className="text-gray-600 mb-6 mt-2 max-w-sm">
+                            Modern, hızlı ve SEO uyumlu web siteleri tasarlıyoruz. İşinizi dijital dünyaya taşıyın.
+                        </p>
+                        <a href="/custom-site" className="campaign-btn" style={{ backgroundColor: '#9333ea', color: 'white' }}>
+                            İncele
+                        </a>
+                    </div>
+
+                    {/* STL Models Card */}
+                    <div className="campaign-card" style={{ backgroundColor: '#dcfce7', border: '1px solid #86efac' }}>
+                        <span className="campaign-label" style={{ backgroundColor: '#16a34a' }}>
+                            3D MODELLER
+                        </span>
+                        <h3 className="campaign-title" style={{ color: '#14532d' }}>
+                            3D Yazıcı<br />Dosyaları (STL)
+                        </h3>
+                        <p className="text-gray-600 mb-6 mt-2 max-w-sm">
+                            3D yazıcılarınız için hazır, yüksek kaliteli STL modelleri keşfedin ve indirin.
+                        </p>
+                        <a href="/3d-modeller-stl" className="campaign-btn" style={{ backgroundColor: '#16a34a', color: 'white' }}>
+                            Modellere Git
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <BlogPreviewSection />
+        </>
+    );
+}

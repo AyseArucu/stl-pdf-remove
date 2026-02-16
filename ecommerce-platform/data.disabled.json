@@ -1,0 +1,464 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "name": "Admin User",
+      "email": "admin@example.com",
+      "role": "ADMIN",
+      "isActive": true
+    },
+    {
+      "id": "2",
+      "name": "Müşteri User",
+      "email": "musteri@example.com",
+      "role": "CUSTOMER"
+    },
+    {
+      "id": "nmx3b",
+      "name": "Test User",
+      "email": "test@test.com",
+      "role": "CUSTOMER"
+    }
+  ],
+  "categories": [
+    {
+      "id": "hube9",
+      "name": "aa",
+      "parentId": "cat1"
+    },
+    {
+      "id": "gj0rjp",
+      "name": "3D"
+    },
+    {
+      "id": "e5o6eq",
+      "name": "3D Figür",
+      "parentId": "gj0rjp"
+    },
+    {
+      "id": "usozjk",
+      "name": "3D Takı",
+      "parentId": "gj0rjp"
+    },
+    {
+      "id": "dp0ral",
+      "name": "3D Anahtarlık",
+      "parentId": "gj0rjp"
+    },
+    {
+      "id": "unu1if",
+      "name": "3D Saksı",
+      "parentId": "gj0rjp"
+    },
+    {
+      "id": "xj99fk",
+      "name": "3D ",
+      "parentId": "gj0rjp"
+    },
+    {
+      "id": "u3vtj7",
+      "name": "3D Oyun Kol Standı",
+      "parentId": "gj0rjp"
+    },
+    {
+      "id": "vzx4ah",
+      "name": "Sevgililer Günü"
+    }
+  ],
+  "products": [
+    {
+      "id": "prod1",
+      "name": "Süper Mario",
+      "description": "Ürün 1.Kalite 3D Baskıdır.\r\nTüm Türkiye'ye kargo ile gönderim sağlanmaktadır.\r\nFigürler sipariş verildikten sonra basım işlemleri gerçekleştirilmektedir.\r\nÜrünlerin Kargoya verilişi ortalama 7 iş günü sürmektedir.",
+      "price": 750,
+      "stock": 5,
+      "categoryId": "gj0rjp",
+      "imageUrl": "/uploads/1767045250856-702127340-28.png",
+      "media": [
+        {
+          "type": "image",
+          "url": "/uploads/1767045250856-702127340-28.png"
+        },
+        {
+          "type": "image",
+          "url": "/uploads/1767045250960-625161226-29.png"
+        },
+        {
+          "type": "image",
+          "url": "/uploads/1767045251016-274957339-30.png"
+        },
+        {
+          "type": "image",
+          "url": "/uploads/1767045251065-216640808-31.png"
+        }
+      ],
+      "color": "{\"name\":\"\",\"hex\":\"#000000\"}",
+      "subcategoryIds": [],
+      "freeShipping": true,
+      "rating": 5,
+      "isActive": true,
+      "options": [],
+      "features": []
+    },
+    {
+      "id": "prod2",
+      "name": "Süper Mario",
+      "description": "Ürün 1.Kalite 3D Baskıdır.\r\nTüm Türkiye'ye kargo ile gönderim sağlanmaktadır.\r\nFigürler sipariş verildikten sonra basım işlemleri gerçekleştirilmektedir.\r\nÜrünlerin Kargoya verilişi ortalama 7 iş günü sürmektedir.",
+      "price": 750,
+      "stock": 100,
+      "categoryId": "gj0rjp",
+      "imageUrl": "/uploads/1767045630208-399436824-27.png",
+      "color": "Kırmızı",
+      "media": [
+        {
+          "type": "image",
+          "url": "/uploads/1767045630208-399436824-27.png"
+        },
+        {
+          "type": "image",
+          "url": "/uploads/1767045644479-602177940-24.png"
+        },
+        {
+          "type": "image",
+          "url": "/uploads/1767045644570-776280550-25.png"
+        },
+        {
+          "type": "image",
+          "url": "/uploads/1767045651513-618421049-26.png"
+        }
+      ],
+      "subcategoryIds": [],
+      "freeShipping": false,
+      "rating": 5,
+      "favoriteCount": 1
+    },
+    {
+      "id": "zskmuk",
+      "name": "Bugsy Bunny",
+      "description": "Ürün 1.Kalite 3D Baskıdır.\r\nTüm Türkiye'ye kargo ile gönderim sağlanmaktadır.\r\nFigürler sipariş verildikten sonra basım işlemleri gerçekleştirilmektedir.\r\nÜrünlerin Kargoya verilişi ortalama 7 iş günü sürmektedir.",
+      "price": 650,
+      "stock": 2,
+      "imageUrl": "/uploads/1767045677163-706522098-4.png",
+      "categoryId": "gj0rjp",
+      "color": "Beyaz",
+      "media": [
+        {
+          "type": "image",
+          "url": "/uploads/1767045677163-706522098-4.png"
+        },
+        {
+          "type": "image",
+          "url": "/uploads/1767045677232-96340918-5.png"
+        },
+        {
+          "type": "image",
+          "url": "/uploads/1767045677324-48641518-6.png"
+        }
+      ],
+      "subcategoryIds": [],
+      "freeShipping": false,
+      "rating": 5
+    },
+    {
+      "id": "epivyk",
+      "name": "Pembe Panter",
+      "description": "Ürün 1.Kalite 3D Baskıdır.\r\nTüm Türkiye'ye kargo ile gönderim sağlanmaktadır.\r\nFigürler sipariş verildikten sonra basım işlemleri gerçekleştirilmektedir.\r\nÜrünlerin Kargoya verilişi ortalama 7 iş günü sürmektedir.",
+      "price": 650,
+      "stock": 3,
+      "imageUrl": "/uploads/1767045744400-534321979-1.png",
+      "media": [
+        {
+          "type": "image",
+          "url": "/uploads/1767045744400-534321979-1.png"
+        },
+        {
+          "type": "image",
+          "url": "/uploads/1767045744457-508132614-2.png"
+        },
+        {
+          "type": "image",
+          "url": "/uploads/1767045744561-995916242-3.png"
+        }
+      ],
+      "categoryId": "gj0rjp",
+      "subcategoryIds": [
+        "e5o6eq"
+      ],
+      "freeShipping": false,
+      "rating": 5,
+      "isActive": true
+    },
+    {
+      "id": "c7vgd",
+      "name": "Bugsy Bunny Batman",
+      "description": "Ürün 1.Kalite 3D Baskıdır.\r\nTüm Türkiye'ye kargo ile gönderim sağlanmaktadır.\r\nFigürler sipariş verildikten sonra basım işlemleri gerçekleştirilmektedir.\r\nÜrünlerin Kargoya verilişi ortalama 7 iş günü sürmektedir.",
+      "price": 350,
+      "stock": 3,
+      "imageUrl": "/uploads/1767082451027-668859418-18.png",
+      "media": [
+        {
+          "type": "image",
+          "url": "/uploads/1767082451027-668859418-18.png"
+        },
+        {
+          "type": "image",
+          "url": "/uploads/1767082454397-35934826-17.png"
+        },
+        {
+          "type": "image",
+          "url": "/uploads/1767082457936-649583819-16.png"
+        }
+      ],
+      "categoryId": "gj0rjp",
+      "subcategoryIds": [
+        "e5o6eq"
+      ],
+      "freeShipping": false,
+      "rating": 5,
+      "isActive": true,
+      "favoriteCount": 0
+    },
+    {
+      "id": "nqnizp9",
+      "name": "Bugsy Bunny & Yosemite Sam",
+      "description": "Ürün 1.Kalite 3D Baskıdır.\r\nTüm Türkiye'ye kargo ile gönderim sağlanmaktadır.\r\nFigürler sipariş verildikten sonra basım işlemleri gerçekleştirilmektedir.\r\nÜrünlerin Kargoya verilişi ortalama 7 iş günü sürmektedir.",
+      "price": 500,
+      "stock": 3,
+      "imageUrl": "/uploads/1767082565840-526520319-11.png",
+      "media": [
+        {
+          "type": "image",
+          "url": "/uploads/1767082565840-526520319-11.png"
+        },
+        {
+          "type": "image",
+          "url": "/uploads/1767082565933-286203192-12.png"
+        },
+        {
+          "type": "image",
+          "url": "/uploads/1767082566002-125817291-13.png"
+        },
+        {
+          "type": "image",
+          "url": "/uploads/1767082566064-977970549-14.png"
+        },
+        {
+          "type": "image",
+          "url": "/uploads/1767082566143-576420580-15.png"
+        }
+      ],
+      "categoryId": "gj0rjp",
+      "subcategoryIds": [
+        "e5o6eq"
+      ],
+      "salePrice": 0,
+      "freeShipping": false,
+      "rating": 5,
+      "isActive": true,
+      "favoriteCount": 1
+    },
+    {
+      "id": "k8dv2",
+      "name": "Pinky and the Brain",
+      "description": "Ürün 1.Kalite 3D Baskıdır.\r\nTüm Türkiye'ye kargo ile gönderim sağlanmaktadır.\r\nFigürler sipariş verildikten sonra basım işlemleri gerçekleştirilmektedir.\r\nÜrünlerin Kargoya verilişi ortalama 7 iş günü sürmektedir.",
+      "price": 500,
+      "stock": 5,
+      "imageUrl": "/uploads/1767082670365-41365673-8.png",
+      "media": [
+        {
+          "type": "image",
+          "url": "/uploads/1767082670365-41365673-8.png"
+        },
+        {
+          "type": "image",
+          "url": "/uploads/1767082670455-579617772-9.png"
+        },
+        {
+          "type": "image",
+          "url": "/uploads/1767082670519-364589305-10.png"
+        },
+        {
+          "type": "image",
+          "url": "/uploads/1767082681356-835690989-7.png"
+        }
+      ],
+      "categoryId": "gj0rjp",
+      "subcategoryIds": [
+        "e5o6eq"
+      ],
+      "freeShipping": false,
+      "rating": 5
+    },
+    {
+      "id": "cen3qm",
+      "name": "Tazmanya Canavarı",
+      "description": "Ürün 1.Kalite 3D Baskıdır.\r\nTüm Türkiye'ye kargo ile gönderim sağlanmaktadır.\r\nFigürler sipariş verildikten sonra basım işlemleri gerçekleştirilmektedir.\r\nÜrünlerin Kargoya verilişi ortalama 7 iş günü sürmektedir.",
+      "price": 850,
+      "stock": 5,
+      "imageUrl": "/uploads/1767082871348-166838788-horsesoftware_924024f440b71089fa7820d73fcc2947.png",
+      "media": [
+        {
+          "type": "image",
+          "url": "/uploads/1767082871348-166838788-horsesoftware_924024f440b71089fa7820d73fcc2947.png"
+        },
+        {
+          "type": "image",
+          "url": "/uploads/1767082883931-679024771-horsesoftware_896026a4d3d45f3db942d2a25394bf1b.png"
+        },
+        {
+          "type": "image",
+          "url": "/uploads/1767082887300-229317277-horsesoftware_ff81e18d1e2702fed86471f7e64218d1.png"
+        },
+        {
+          "type": "image",
+          "url": "/uploads/1767082889726-35969570-horsesoftware_2b7f1abd879d6fa6afb1e396f1f0f858.png"
+        }
+      ],
+      "categoryId": "gj0rjp",
+      "subcategoryIds": [
+        "e5o6eq"
+      ],
+      "freeShipping": false,
+      "rating": 5
+    },
+    {
+      "id": "ftp399",
+      "name": "Daffy Duck Detaylı ve Renkli Büyük Figür",
+      "description": "Ürün 1.Kalite 3D Baskıdır.\r\nTüm Türkiye'ye kargo ile gönderim sağlanmaktadır.\r\nFigürler sipariş verildikten sonra basım işlemleri gerçekleştirilmektedir.\r\nÜrünlerin Kargoya verilişi ortalama 7 iş günü sürmektedir.",
+      "price": 1000,
+      "stock": 5,
+      "imageUrl": "/uploads/1767083061747-866450580-horsesoftware_2951ec6514bb4dd6b8704c17904e4421.png",
+      "media": [
+        {
+          "type": "image",
+          "url": "/uploads/1767083061747-866450580-horsesoftware_2951ec6514bb4dd6b8704c17904e4421.png"
+        },
+        {
+          "type": "image",
+          "url": "/uploads/1767083064961-813153833-horsesoftware_2f61330b140b77118d53d7cc884e4c4e.png"
+        },
+        {
+          "type": "image",
+          "url": "/uploads/1767083067210-28831248-horsesoftware_23641cf3107a599079214ec0d2bcc304.png"
+        },
+        {
+          "type": "image",
+          "url": "/uploads/1767083070130-748499681-horsesoftware_7823577137f9a4f7b3b6c43011ccd247.png"
+        },
+        {
+          "type": "image",
+          "url": "/uploads/1767083072932-568699070-horsesoftware_486a7a2b03fe11d536c46b15e829ec04.png"
+        }
+      ],
+      "categoryId": "gj0rjp",
+      "subcategoryIds": [
+        "e5o6eq"
+      ],
+      "freeShipping": false,
+      "rating": 5,
+      "isActive": true,
+      "options": [
+        {
+          "name": "fss",
+          "price": 30
+        }
+      ]
+    }
+  ],
+  "orders": [
+    {
+      "id": "ord1",
+      "customerName": "Ahmet Yılmaz",
+      "customerEmail": "ahmet@example.com",
+      "items": [
+        {
+          "productId": "prod1",
+          "productName": "Laptop",
+          "quantity": 1,
+          "price": 15000
+        }
+      ],
+      "total": 15000,
+      "status": "İptal",
+      "date": "2025-12-26T13:58:25.768Z"
+    },
+    {
+      "id": "ord2",
+      "customerName": "Ayşe Demir",
+      "customerEmail": "ayse@example.com",
+      "items": [
+        {
+          "productId": "prod2",
+          "productName": "Tişört",
+          "quantity": 2,
+          "price": 200
+        }
+      ],
+      "total": 400,
+      "status": "Kargolandı",
+      "date": "2025-12-25T13:58:25.769Z"
+    },
+    {
+      "id": "7rk8w9",
+      "customerName": "aa",
+      "customerEmail": "admin@example.com",
+      "address": "fsdfsd",
+      "items": [
+        {
+          "productId": "c7vgd",
+          "productName": "Bugsy Bunny Batman",
+          "quantity": 2,
+          "price": 350
+        }
+      ],
+      "total": 700,
+      "status": "İptal",
+      "paymentMethod": "BANK_TRANSFER",
+      "paymentStatus": "PENDING",
+      "date": "2025-12-31T00:25:34.944Z"
+    },
+    {
+      "id": "ptlwg",
+      "customerName": "Ayşe Arucu",
+      "customerEmail": "aysearucu8@gmail.com",
+      "address": "İstanbul Üsküdar Ünalan Mahallesi anıl sokak no 25 daire 3",
+      "items": [
+        {
+          "productId": "cen3qm",
+          "productName": "Tazmanya Canavarı",
+          "quantity": 1,
+          "price": 850
+        }
+      ],
+      "total": 850,
+      "status": "Hazırlanıyor",
+      "paymentMethod": "COD",
+      "paymentStatus": "PENDING",
+      "date": "2026-01-08T20:30:32.989Z"
+    }
+  ],
+  "reviews": [
+    {
+      "id": "4fkxpnv",
+      "productId": "prod1",
+      "userId": "2nxxcd",
+      "userName": "gjhgjh hgkgjh",
+      "rating": 5,
+      "comment": "fkgfh",
+      "createdAt": "2025-12-27T22:53:13.831Z"
+    },
+    {
+      "id": "oogmybx",
+      "productId": "c7vgd",
+      "userId": "8don1",
+      "userName": "fsds",
+      "rating": 5,
+      "comment": "fds",
+      "createdAt": "2025-12-30T22:16:52.005Z"
+    }
+  ],
+  "contactSettings": {
+    "address": "İstanbul/ Üsküdar Ünalan Mah. Şahin Apartman\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+    "mapUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3011.1557693841346!2d29.065765476695578!3d40.99996367135176!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cac7e7712ea2d3%3A0x9b2aadadbe95722!2zw5xuYWxhbiwgQW5pbCBTb2thZ2ksIDM0NzAwIMOcc2vDvGRhci_EsHN0YW5idWw!5e0!3m2!1str!2str!4v1767221658459!5m2!1str!2str"
+  }
+}
