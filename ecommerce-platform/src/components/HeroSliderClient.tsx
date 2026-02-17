@@ -14,6 +14,7 @@ interface HeroSlideData {
     subtitle: string | null;
     description: string | null;
     imageUrl: string;
+    bgImageUrl: string | null;
     buttonText: string;
     buttonLink: string;
 }
@@ -43,7 +44,13 @@ const HeroSliderClient = ({ slides }: { slides: HeroSlideData[] }) => {
         <div className="hero-slider-container">
             <Slider {...settings}>
                 {slides.map((slide) => (
-                    <div key={slide.id} className="hero-slide">
+                    <div
+                        key={slide.id}
+                        className="hero-slide"
+                        style={{
+                            backgroundImage: slide.bgImageUrl ? `linear-gradient(to bottom, #e4e4e427, rgb(0, 0, 0)), url(${slide.bgImageUrl})` : undefined
+                        }}
+                    >
                         <div className="container" style={{ height: '100%', display: 'flex', alignItems: 'center' }}>
                             <div className="header-bottom">
                                 <div className="header-bottom-left">

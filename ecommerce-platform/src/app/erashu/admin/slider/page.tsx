@@ -49,6 +49,7 @@ export default async function AdminSliderPage() {
                             <th style={{ padding: '1rem', fontWeight: 600 }}>Alt Başlık</th>
                             <th style={{ padding: '1rem', fontWeight: 600 }}>Buton</th>
                             <th style={{ padding: '1rem', fontWeight: 600 }}>Link</th>
+                            <th style={{ padding: '1rem', fontWeight: 600 }}>Durum</th>
                             <th style={{ padding: '1rem', fontWeight: 600 }}>İşlemler</th>
                         </tr>
                     </thead>
@@ -69,6 +70,18 @@ export default async function AdminSliderPage() {
                                 <td style={{ padding: '1rem', color: 'var(--text-light)' }}>{slide.subtitle || '-'}</td>
                                 <td style={{ padding: '1rem' }}>{slide.buttonText}</td>
                                 <td style={{ padding: '1rem', fontSize: '0.9rem', color: 'blue' }}>{slide.buttonLink}</td>
+                                <td style={{ padding: '1rem' }}>
+                                    <span style={{
+                                        padding: '0.25rem 0.75rem',
+                                        borderRadius: '9999px',
+                                        fontSize: '0.75rem',
+                                        fontWeight: 600,
+                                        backgroundColor: slide.isActive ? '#ecfdf5' : '#fef2f2',
+                                        color: slide.isActive ? '#059669' : '#dc2626'
+                                    }}>
+                                        {slide.isActive ? 'Aktif' : 'Pasif'}
+                                    </span>
+                                </td>
                                 <td style={{ padding: '1rem' }}>
                                     <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                                         <Link href={`/erashu/admin/slider/${slide.id}`} style={{ color: 'var(--primary)', fontWeight: 500, textDecoration: 'none' }}>

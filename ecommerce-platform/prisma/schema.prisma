@@ -7,52 +7,45 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// 1. KULLANICI (User)
 model User {
-  id       String  @id @default(cuid())
-  email    String  @unique
-  name     String?
-  phone    String?
-  image    String?
-  password String? // Optional for now as legacy data might not have it or use different auth
-  role     String  @default("CUSTOMER") // "ADMIN" | "SUB_ADMIN" | "CUSTOMER"
-  isActive Boolean @default(true)
-  emailVerified DateTime? // Null means not verified
-
-  // RBAC Fields
-  roleId      String?
-  userRole    Role?            @relation(fields: [roleId], references: [id])
-  permissions UserPermission[]
-
-  orders       Order[]
-  reviews      Review[]
-  questions    Question[]
-  favorites    Favorite[]
-  stlFavorites StlFavorite[]
-  cart         Cart?
-  blogComments BlogComment[]
-  blogPosts    BlogPost[]
-  qrCodes      QrCode[]
+  id            String           @id @default(cuid())
+  email         String           @unique
+  name          String?
+  phone         String?
+  image         String?
+  password      String?
+  role          String           @default("CUSTOMER")
+  isActive      Boolean          @default(true)
+  emailVerified DateTime?
+  roleId        String?
+  blogComments  BlogComment[]
+  blogPosts     BlogPost[]
+  cart          Cart?
+  favorites     Favorite[]
+  orders        Order[]
+  qrCodes       QrCode[]
+  questions     Question[]
+  reviews       Review[]
+  stlFavorites  StlFavorite[]
+  userRole      Role?            @relation(fields: [roleId], references: [id])
+  permissions   UserPermission[]
 }
 
-// ... existing models ...
-
-// 6. RBAC SYSTEM
 model Role {
   id          String           @id @default(cuid())
   name        String           @unique
   description String?
-  users       User[]
-  permissions RolePermission[]
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
+  permissions RolePermission[]
+  users       User[]
 }
 
 model Permission {
   id          String           @id @default(cuid())
-  key         String           @unique // e.g., "products_view"
+  key         String           @unique
   description String?
-  module      String // e.g., "PRODUCTS"
+  module      String
   roles       RolePermission[]
   users       UserPermission[]
 }
@@ -60,9 +53,9 @@ model Permission {
 model RolePermission {
   id           String     @id @default(cuid())
   roleId       String
-  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
   permissionId String
   permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
 
   @@unique([roleId, permissionId])
 }
@@ -70,9 +63,9 @@ model RolePermission {
 model UserPermission {
   id           String     @id @default(cuid())
   userId       String
-  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   permissionId String
   permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, permissionId])
 }
@@ -80,9 +73,9 @@ model UserPermission {
 model AuditLog {
   id          String   @id @default(cuid())
   action      String
-  performedBy String // User ID or Email
-  targetUser  String? // Target User ID or Email
-  details     String? // JSON string
+  performedBy String
+  targetUser  String?
+  details     String?
   createdAt   DateTime @default(now())
 }
 
@@ -98,15 +91,14 @@ model EmailChangeToken {
 model Favorite {
   id        String   @id @default(cuid())
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   productId String
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, productId])
 }
 
-// 2. KATEGORİ (Category)
 model Category {
   id       String     @id @default(cuid())
   name     String
@@ -116,127 +108,110 @@ model Category {
   products Product[]
 }
 
-// 3. ÜRÜN (Product)
 model Product {
-  id          String         @id @default(cuid())
-  name        String
-  description String
-  price       Float
-  stock       Int
-  imageUrl    String
-  media       ProductMedia[]
-
-  categoryId String
-  category   Category @relation(fields: [categoryId], references: [id])
-
-  // Extra fields
+  id            String           @id @default(cuid())
+  name          String
+  description   String
+  price         Float
+  stock         Int
+  imageUrl      String
+  categoryId    String
   salePrice     Float?
   color         String?
-  freeShipping  Boolean  @default(false)
-  rating        Float    @default(0)
-  isActive      Boolean  @default(true)
-  favoriteCount Int      @default(0)
-  viewCount     Int      @default(0)
-  createdAt     DateTime @default(now())
-
-  // Relationships
-  options    ProductOption[]
-  features   ProductFeature[]
-  reviews    Review[]
-  questions  Question[]
-  orderItems OrderItem[]
-
-  // Many-to-Many via explicit table or implicit? keeping simple for now, 
-  // but looking at db.ts "productIds: string[]" in Collection implies M-N
-  collections Collection[] @relation("CollectionProducts")
-  favorites   Favorite[]
-  cartItems   CartItem[]
+  freeShipping  Boolean          @default(false)
+  rating        Float            @default(0)
+  isActive      Boolean          @default(true)
+  favoriteCount Int              @default(0)
+  viewCount     Int              @default(0)
+  createdAt     DateTime         @default(now())
+  cartItems     CartItem[]
+  favorites     Favorite[]
+  orderItems    OrderItem[]
+  category      Category         @relation(fields: [categoryId], references: [id])
+  features      ProductFeature[]
+  media         ProductMedia[]
+  options       ProductOption[]
+  questions     Question[]
+  reviews       Review[]
+  collections   Collection[]     @relation("CollectionProducts")
 }
 
 model ProductMedia {
   id        String  @id @default(cuid())
   productId String
-  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  type      String // "image" | "video"
+  type      String
   url       String
   thumbnail String?
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 
 model ProductOption {
   id        String  @id @default(cuid())
   productId String
-  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   name      String
-  price     Float // Usually price difference or override
+  price     Float
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 
 model ProductFeature {
   id          String  @id @default(cuid())
   productId   String
-  product     Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   title       String
   description String
+  product     Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 
-// 4. SİPARİŞ (Order)
 model Order {
-  id            String   @id @default(cuid())
+  id            String      @id @default(cuid())
   customerName  String
   customerEmail String
   address       String
   total         Float
   discountTotal Float?
-  status        String // "Hazırlanıyor", "Kargolandı", "Teslim Edildi", "İptal"
-  paymentMethod String // "CREDIT_CARD", "BANK_TRANSFER", "COD"
-  paymentStatus String // "PENDING", "PAID", "FAILED"
-  date          DateTime @default(now())
-
-  // Link to User if logged in
-  userId String?
-  user   User?   @relation(fields: [userId], references: [id])
-
-  items OrderItem[]
+  status        String
+  paymentMethod String
+  paymentStatus String
+  date          DateTime    @default(now())
+  userId        String?
+  user          User?       @relation(fields: [userId], references: [id])
+  items         OrderItem[]
 }
 
 model OrderItem {
-  id      String @id @default(cuid())
-  orderId String
-  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
-
-  productId String?
-  product   Product? @relation(fields: [productId], references: [id])
-
-  stlModelId String?
-  stlModel   StlModel? @relation(fields: [stlModelId], references: [id])
-
-  productName String // Snapshot of name
+  id          String    @id @default(cuid())
+  orderId     String
+  productId   String?
+  stlModelId  String?
+  productName String
   quantity    Int
   price       Float
+  stlModel    StlModel? @relation(fields: [stlModelId], references: [id])
+  product     Product?  @relation(fields: [productId], references: [id])
+  order       Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
 }
 
-// 5. DİĞERLERİ
 model Review {
   id        String   @id @default(cuid())
   productId String
-  product   Product  @relation(fields: [productId], references: [id])
   userId    String
-  user      User     @relation(fields: [userId], references: [id])
   userName  String
   rating    Int
   comment   String
   createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
 }
 
 model Question {
   id        String   @id @default(cuid())
   productId String
-  product   Product  @relation(fields: [productId], references: [id])
   userId    String?
-  user      User?    @relation(fields: [userId], references: [id])
   userName  String
   question  String
   answer    String?
   createdAt DateTime @default(now())
+  user      User?    @relation(fields: [userId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
 }
 
 model Collection {
@@ -272,7 +247,7 @@ model ServiceRequest {
   name             String
   email            String
   phone            String
-  siteType         String // "CORPORATE", "ECOMMERCE", etc.
+  siteType         String
   pageCount        String
   specialRequests  String?
   budget           String?
@@ -315,17 +290,18 @@ model HeroSlide {
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  bgImageUrl  String?
 }
 
 model ServicePageContent {
   id              String @id @default(cuid())
   heroTitle       String
   heroDescription String
-  benefits        String // JSON string
+  benefits        String
   whyUsText       String
-  stats           String // JSON string
-  packages        String // JSON string
-  faqs            String // JSON string
+  stats           String
+  packages        String
+  faqs            String
   whatsappNumber  String
   whatsappMessage String
 }
@@ -341,79 +317,61 @@ model PasswordResetToken {
 model Cart {
   id        String     @id @default(cuid())
   userId    String?    @unique
-  user      User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  items     CartItem[]
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
+  user      User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items     CartItem[]
 }
 
-// 5. DİĞERLERİ
-
-// ... (Reviews, Questions, etc. omitted for brevity, keeping file intact)
-// But I need to preserve the middle part. The tool replaces contiguous block.
-// I will replace OrderItem, CartItem, StlModel, and add StlCategory.
-
 model CartItem {
-  id     String @id @default(cuid())
-  cartId String
-  cart   Cart   @relation(fields: [cartId], references: [id], onDelete: Cascade)
-
-  productId String?
-  product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
-
+  id         String    @id @default(cuid())
+  cartId     String
+  productId  String?
   stlModelId String?
+  quantity   Int
+  price      Float
+  createdAt  DateTime  @default(now())
   stlModel   StlModel? @relation(fields: [stlModelId], references: [id], onDelete: Cascade)
-
-  quantity  Int
-  price     Float // Snapshot price or can be derived
-  createdAt DateTime @default(now())
-
-  // Unique constraint might need adjustment or separate them. 
-  // @@unique([cartId, productId]) -> Cannot enforce easily with optional fields in standard way without partial index or just let app handle it.
-  // For SQLite, standard unique constraint checks non-nulls.
-  // We can just rely on app logic for now or remove unique constraint.
+  product    Product?  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  cart       Cart      @relation(fields: [cartId], references: [id], onDelete: Cascade)
 }
 
 model StlCategory {
   id       String     @id @default(cuid())
   name     String
-  slug     String?    @unique // Optional to avoid breaking existing
+  slug     String?    @unique
   isActive Boolean    @default(true)
   models   StlModel[]
 }
 
 model StlModel {
-  id          String   @id @default(cuid())
-  name        String
-  description String
-  fileUrl     String
-  imageUrl    String
-  price       Float    @default(0)
-  isFree      Boolean  @default(false)
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-
-  categoryId String?
-  category   StlCategory? @relation(fields: [categoryId], references: [id])
-
-  viewCount     Int @default(0)
-  downloadCount Int @default(0)
-  favoriteCount Int @default(0)
-
-  tags StlTag[] @relation("StlModelTags")
-
-  cartItems  CartItem[]
-  orderItems OrderItem[]
-  favorites  StlFavorite[]
+  id            String        @id @default(cuid())
+  name          String
+  description   String
+  fileUrl       String
+  imageUrl      String
+  price         Float         @default(0)
+  isFree        Boolean       @default(false)
+  isActive      Boolean       @default(true)
+  createdAt     DateTime      @default(now())
+  categoryId    String?
+  viewCount     Int           @default(0)
+  downloadCount Int           @default(0)
+  favoriteCount Int           @default(0)
+  cartItems     CartItem[]
+  orderItems    OrderItem[]
+  favorites     StlFavorite[]
+  category      StlCategory?  @relation(fields: [categoryId], references: [id])
+  tags          StlTag[]      @relation("StlModelTags")
 }
 
 model StlFavorite {
   id         String   @id @default(cuid())
   userId     String
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   stlModelId String
-  stlModel   StlModel @relation(fields: [stlModelId], references: [id], onDelete: Cascade)
   createdAt  DateTime @default(now())
+  stlModel   StlModel @relation(fields: [stlModelId], references: [id], onDelete: Cascade)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, stlModelId])
 }
@@ -432,65 +390,61 @@ model ShippingSettings {
 }
 
 model BlogPost {
-  id          String   @id @default(cuid())
-  title       String
-  slug        String   @unique
-  coverImage  String
-  excerpt     String
-  content     String
-  category    String // "Blog" | "Haber"
-  published   Boolean  @default(true)
-  viewCount   Int      @default(0)
-  author      String?  // Display name (Legacy or manual override)
-  authorId    String?
-  authorUser  User?    @relation(fields: [authorId], references: [id])
-  images      String?  // JSON string for extra images
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  comments    BlogComment[]
+  id         String        @id @default(cuid())
+  title      String
+  slug       String        @unique
+  coverImage String
+  excerpt    String
+  content    String
+  category   String
+  published  Boolean       @default(true)
+  viewCount  Int           @default(0)
+  author     String?
+  authorId   String?
+  images     String?
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+  comments   BlogComment[]
+  authorUser User?         @relation(fields: [authorId], references: [id])
 }
 
 model BlogComment {
-  id        String   @id @default(cuid())
-  content   String
-  postId    String
-  post      BlogPost @relation(fields: [postId], references: [id], onDelete: Cascade)
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  authorName String?
+  id            String        @id @default(cuid())
+  content       String
+  postId        String
+  userId        String
+  authorName    String?
   authorSurname String?
-  createdAt DateTime @default(now())
-  
-  // Replies
-  parentId  String?
-  parent    BlogComment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
-  replies   BlogComment[] @relation("CommentReplies")
+  createdAt     DateTime      @default(now())
+  parentId      String?
+  parent        BlogComment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies       BlogComment[] @relation("CommentReplies")
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post          BlogPost      @relation(fields: [postId], references: [id], onDelete: Cascade)
 }
 
 model QrCode {
-  id          String   @id @default(cuid())
-  type        String   @default("url") // "url", "video", "vcard", "pdf", "image", "audio", "app", "wifi", "text"
-  targetUrl   String?  // Optional because some types (like vCard) might just render data directly or use internal routing
-  data        String?  // JSON string for rich data (vCard fields, Media URLs, etc.)
-  name        String?
-  password    String?
-  viewCount   Int      @default(0)
-  design      String?  // JSON string for colors, shapes, logo, etc.
-  
-  userId      String?
-  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        String   @id @default(cuid())
+  type      String   @default("url")
+  targetUrl String?
+  data      String?
+  name      String?
+  password  String?
+  viewCount Int      @default(0)
+  design    String?
+  userId    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User?    @relation(fields: [userId], references: [id])
 }
 
 model Advertisement {
   id        String   @id @default(cuid())
   title     String
-  type      String   // "IMAGE" | "HTML" | "VIDEO"
-  content   String   // Image URL, Video URL, or HTML Code
-  location  String   // Removed @unique to allow multiple ads per location
-  duration  Int      @default(5) // Duration in seconds
+  type      String
+  content   String
+  location  String
+  duration  Int      @default(5)
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

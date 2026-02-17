@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { cookies } from 'next/headers'
 import { Inter } from 'next/font/google'
+import { Suspense } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 import './globals.css'
@@ -18,6 +19,7 @@ export const metadata: Metadata = {
 
 import { FavoritesProvider } from '@/context/FavoritesContext';
 import { UserProvider } from '@/context/UserContext';
+// import HomeServices from '@/components/HomeServices';
 
 import SideAdsWrapper from '@/components/ads/SideAdsWrapper';
 
@@ -41,11 +43,17 @@ export default function RootLayout({
                     <UserProvider user={user}>
                         <Providers>
                             <FavoritesProvider>
-                                <Header user={user} />
+                                <Suspense fallback={<div className="h-16 bg-[#2d0a31] animate_pulse" />}>
+                                    <Header user={user} />
+                                </Suspense>
                                 <main className="flex-grow">
-                                    {children}
+                                    <Suspense fallback={<div className="flex h-64 items-center justify-center"><div className="h-8 w-8 animate-spin rounded-full border-4 border-purple-600 border-t-transparent" /></div>}>
+                                        {children}
+                                    </Suspense>
                                 </main>
-                                <SideAdsWrapper />
+                                <Suspense fallback={null}>
+                                    <SideAdsWrapper />
+                                </Suspense>
                                 <SupportWidget />
                                 <ScrollToTop />
                                 <Footer />

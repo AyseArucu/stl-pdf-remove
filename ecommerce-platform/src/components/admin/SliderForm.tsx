@@ -14,6 +14,7 @@ export default function SliderForm({ slide, action, mode }: SliderFormProps) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [preview, setPreview] = useState<string | null>(slide?.imageUrl || null);
+    const [bgPreview, setBgPreview] = useState<string | null>(slide?.bgImageUrl || null);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -113,28 +114,66 @@ export default function SliderForm({ slide, action, mode }: SliderFormProps) {
                             className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
                         />
                     </div>
+                    <div className="flex items-center gap-2 pt-2">
+                        <label className="relative inline-flex items-center cursor-pointer">
+                            <input
+                                type="checkbox"
+                                name="isActive"
+                                defaultChecked={slide ? slide.isActive : true}
+                                className="sr-only peer"
+                            />
+                            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+                            <span className="ml-3 text-sm font-semibold text-gray-700">Aktif</span>
+                        </label>
+                    </div>
                 </div>
             </div>
 
-            <div className="border-t pt-6">
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Görsel (Önerilen: 1920x800px)</label>
-                <div className="flex items-start gap-6">
-                    <div className="flex-1">
-                        <input
-                            type="file"
-                            name="image"
-                            accept="image/*"
-                            onChange={handleImageChange}
-                            required={mode === 'create'} // Required only on create
-                            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100"
-                        />
-                        <p className="text-xs text-gray-500 mt-2">PNG, JPG veya WEBP. Maksimum 5MB.</p>
-                    </div>
-                    {preview && (
-                        <div className="w-64 h-32 rounded-lg overflow-hidden border border-gray-200 bg-gray-50 relative">
-                            <img src={preview} alt="Preview" className="w-full h-full object-cover" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 border-t pt-6">
+                <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Ön Görsel (Önerilen: PNG, Şeffaf)</label>
+                    <div className="flex items-start gap-4">
+                        <div className="flex-1">
+                            <input
+                                type="file"
+                                name="image"
+                                accept="image/*"
+                                onChange={handleImageChange}
+                                required={mode === 'create'}
+                                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100"
+                            />
                         </div>
-                    )}
+                        {preview && (
+                            <div className="w-24 h-24 rounded-lg overflow-hidden border border-gray-200 bg-gray-50 relative">
+                                <img src={preview} alt="Preview" className="w-full h-full object-contain" />
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Arka Plan Görseli (Önerilen: 1920x800px)</label>
+                    <div className="flex items-start gap-4">
+                        <div className="flex-1">
+                            <input
+                                type="file"
+                                name="bgImage"
+                                accept="image/*"
+                                onChange={(e) => {
+                                    const file = e.target.files?.[0];
+                                    if (file) {
+                                        setBgPreview(URL.createObjectURL(file));
+                                    }
+                                }}
+                                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100"
+                            />
+                        </div>
+                        {bgPreview && (
+                            <div className="w-24 h-24 rounded-lg overflow-hidden border border-gray-200 bg-gray-50 relative">
+                                <img src={bgPreview} alt="BG Preview" className="w-full h-full object-cover" />
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
 

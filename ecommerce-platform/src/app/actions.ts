@@ -1605,6 +1605,8 @@ export async function createHeroSlide(formData: FormData) {
     const description = formData.get('description') as string;
     const buttonText = formData.get('buttonText') as string;
     const buttonLink = formData.get('buttonLink') as string;
+    const order = parseInt(formData.get('order') as string) || 0;
+    const isActive = formData.get('isActive') === 'on';
     const image = formData.get('image') as File;
 
     if (!image || image.size === 0) return { error: 'Görsel zorunludur.' };
@@ -1624,10 +1626,28 @@ export async function createHeroSlide(formData: FormData) {
         return { error: 'Görsel yüklenemedi.' };
     }
 
+    const bgImage = formData.get('bgImage') as File;
+    let bgImageUrl = '';
+    if (bgImage && bgImage.size > 0) {
+        try {
+            const bytes = await bgImage.arrayBuffer();
+            const buffer = Buffer.from(bytes);
+            const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+            const filename = bgImage.name.replace(/\s+/g, '-').toLowerCase();
+            const finalName = `hero-bg-${uniqueSuffix}-${filename}`;
+            const uploadDir = join(process.cwd(), 'public', 'uploads');
+            const path = join(uploadDir, finalName);
+            await writeFile(path, buffer);
+            bgImageUrl = `/uploads/${finalName}`;
+        } catch (e) {
+            console.error('BG Image upload error', e);
+        }
+    }
+
     try {
         await prisma.heroSlide.create({
             data: {
-                title, subtitle, description, buttonText, buttonLink, imageUrl
+                title, subtitle, description, buttonText, buttonLink, imageUrl, bgImageUrl, order, isActive
             }
         });
         revalidatePath('/');
@@ -1645,6 +1665,8 @@ export async function updateHeroSlide(formData: FormData) {
     const description = formData.get('description') as string;
     const buttonText = formData.get('buttonText') as string;
     const buttonLink = formData.get('buttonLink') as string;
+    const order = parseInt(formData.get('order') as string) || 0;
+    const isActive = formData.get('isActive') === 'on';
     const image = formData.get('image') as File;
 
     try {
@@ -1673,10 +1695,33 @@ export async function updateHeroSlide(formData: FormData) {
             }
         }
 
+        const bgImage = formData.get('bgImage') as File;
+        let bgImageUrl = existing.bgImageUrl;
+
+        if (bgImage && bgImage.size > 0) {
+            try {
+                // Delete old
+                if (existing.bgImageUrl) await unlink(join(process.cwd(), 'public', existing.bgImageUrl)).catch(() => { });
+
+                // Upload new
+                const bytes = await bgImage.arrayBuffer();
+                const buffer = Buffer.from(bytes);
+                const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+                const filename = bgImage.name.replace(/\s+/g, '-').toLowerCase();
+                const finalName = `hero-bg-${uniqueSuffix}-${filename}`;
+                const uploadDir = join(process.cwd(), 'public', 'uploads');
+                const path = join(uploadDir, finalName);
+                await writeFile(path, buffer);
+                bgImageUrl = `/uploads/${finalName}`;
+            } catch (e) {
+                console.error('BG Image update error', e);
+            }
+        }
+
         await prisma.heroSlide.update({
             where: { id },
             data: {
-                title, subtitle, description, buttonText, buttonLink, imageUrl
+                title, subtitle, description, buttonText, buttonLink, imageUrl, bgImageUrl, order, isActive
             }
         });
         revalidatePath('/');
