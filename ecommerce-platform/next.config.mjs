@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     experimental: {
-        serverComponentsExternalPackages: ['@imgly/background-removal', 'onnxruntime-web', 'better-sqlite3'],
+        serverComponentsExternalPackages: ['@imgly/background-removal', 'onnxruntime-web'],
     },
     eslint: {
         ignoreDuringBuilds: true,

@@ -1491,12 +1491,6 @@ export async function updateStlModel(formData: FormData) {
         let fileUrl = existing.fileUrl;
         let imageUrl = existing.imageUrl;
 
-        // Helper for safe path
-        const getSafePath = (url: string) => {
-            const rel = url.startsWith('/') ? url.substring(1) : url;
-            return join(process.cwd(), 'public', rel);
-        };
-
         // Handle File Update
         if (file && file.size > 0) {
             try {
@@ -1657,7 +1651,7 @@ export async function createHeroSlide(formData: FormData) {
     }
 
     try {
-        await prisma.heroSlide.create({
+        await (prisma.heroSlide as any).create({
             data: {
                 title, subtitle, description, buttonText, buttonLink, imageUrl, bgImageUrl, order, isActive
             }
@@ -1682,7 +1676,7 @@ export async function updateHeroSlide(formData: FormData) {
     const image = formData.get('image') as File;
 
     try {
-        const existing = await prisma.heroSlide.findUnique({ where: { id } });
+        const existing = await prisma.heroSlide.findUnique({ where: { id } }) as any;
         if (!existing) return { error: 'Slayt bulunamadı.' };
 
         let imageUrl = existing.imageUrl;
@@ -1735,7 +1729,7 @@ export async function updateHeroSlide(formData: FormData) {
             }
         }
 
-        await prisma.heroSlide.update({
+        await (prisma.heroSlide as any).update({
             where: { id },
             data: {
                 title, subtitle, description, buttonText, buttonLink, imageUrl, bgImageUrl, order, isActive
@@ -1752,7 +1746,7 @@ export async function updateHeroSlide(formData: FormData) {
 export async function deleteHeroSlide(formData: FormData) {
     const id = formData.get('id') as string;
     try {
-        const slide = await prisma.heroSlide.findUnique({ where: { id } });
+        const slide = await prisma.heroSlide.findUnique({ where: { id } }) as any;
         if (!slide) return { error: 'Slayt bulunamadı.' };
 
         if (slide.imageUrl && slide.imageUrl.includes('public.blob.vercel-storage.com')) {
