@@ -35,7 +35,8 @@ const HeroSliderClient = ({ slides }: { slides: HeroSlideData[] }) => {
 
     React.useEffect(() => {
         setMounted(true);
-    }, []);
+        console.log('Slides data:', slides);
+    }, [slides]);
 
     if (!slides || slides.length === 0) return null;
     if (!mounted) return null;
@@ -47,10 +48,24 @@ const HeroSliderClient = ({ slides }: { slides: HeroSlideData[] }) => {
                     <div
                         key={slide.id}
                         className="hero-slide"
-                        style={{
-                            backgroundImage: slide.bgImageUrl ? `linear-gradient(to bottom, #e4e4e427, rgb(0, 0, 0)), url(${slide.bgImageUrl})` : undefined
-                        }}
+                        style={{ position: 'relative', overflow: 'hidden' }}
                     >
+                        {/* Background Image Layer */}
+                        <div className="hero-slide-bg-wrapper" style={{ position: 'absolute', inset: 0, zIndex: -1 }}>
+                            <Image
+                                src={slide.bgImageUrl || '/images/banner-bg.jpg'}
+                                alt="Background"
+                                fill
+                                priority
+                                style={{ objectFit: 'cover' }}
+                            />
+                            {/* Dark Overlay */}
+                            <div style={{
+                                position: 'absolute',
+                                inset: 0,
+                                background: 'linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.7))'
+                            }} />
+                        </div>
                         <div className="container" style={{ height: '100%', display: 'flex', alignItems: 'center' }}>
                             <div className="header-bottom">
                                 <div className="header-bottom-left">

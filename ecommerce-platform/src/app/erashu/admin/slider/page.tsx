@@ -44,7 +44,8 @@ export default async function AdminSliderPage() {
                     <thead style={{ backgroundColor: '#f9fafb', borderBottom: '1px solid var(--border)' }}>
                         <tr>
                             <th style={{ padding: '1rem', fontWeight: 600 }}>Sıra</th>
-                            <th style={{ padding: '1rem', fontWeight: 600 }}>Görsel</th>
+                            <th style={{ padding: '1rem', fontWeight: 600 }}>Ön Görsel</th>
+                            <th style={{ padding: '1rem', fontWeight: 600 }}>Arka Plan</th>
                             <th style={{ padding: '1rem', fontWeight: 600 }}>Başlık</th>
                             <th style={{ padding: '1rem', fontWeight: 600 }}>Alt Başlık</th>
                             <th style={{ padding: '1rem', fontWeight: 600 }}>Buton</th>
@@ -65,6 +66,19 @@ export default async function AdminSliderPage() {
                                             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                         />
                                     </div>
+                                </td>
+                                <td style={{ padding: '1rem' }}>
+                                    {slide.bgImageUrl ? (
+                                        <div style={{ width: '80px', height: '40px', borderRadius: '4px', overflow: 'hidden', backgroundColor: '#f3f4f6' }}>
+                                            <img
+                                                src={slide.bgImageUrl}
+                                                alt="Background"
+                                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                            />
+                                        </div>
+                                    ) : (
+                                        <span style={{ fontSize: '0.8rem', color: '#9ca3af italic' }}>Varsayılan</span>
+                                    )}
                                 </td>
                                 <td style={{ padding: '1rem', fontWeight: 500 }}>{slide.title}</td>
                                 <td style={{ padding: '1rem', color: 'var(--text-light)' }}>{slide.subtitle || '-'}</td>
