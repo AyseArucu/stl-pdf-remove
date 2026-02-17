@@ -17,6 +17,7 @@
     "@distube/ytdl-core": "^4.16.12",
     "@imgly/background-removal": "^1.7.0",
     "@prisma/client": "^5.22.0",
+    "@vercel/blob": "^0.23.4",
     "@react-three/drei": "^9.112.0",
     "@react-three/fiber": "^8.17.6",
     "@types/three": "^0.168.0",

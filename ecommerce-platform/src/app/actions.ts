@@ -6,6 +6,7 @@ import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import { randomUUID } from 'crypto';
 import { sendPasswordResetEmail, sendVerificationEmail } from '@/lib/email';
+import { put, del } from '@vercel/blob';
 
 export async function createProduct(formData: FormData) {
     const name = formData.get('name') as string;
@@ -608,30 +609,27 @@ export async function submitReview(formData: FormData) {
     }
 }
 
-import { writeFile, unlink } from 'fs/promises';
-import { join } from 'path';
-
 export async function uploadFile(formData: FormData) {
     const file = formData.get('file') as File;
     if (!file) {
         throw new Error('Dosya seçilmedi');
     }
 
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
+    try {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        const filename = file.name.replace(/\s+/g, '-').toLowerCase();
+        const finalName = `upload-${uniqueSuffix}-${filename}`;
 
-    // Create unique filename
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    const filename = file.name.replace(/\s+/g, '-').toLowerCase(); // sanitize
-    const finalName = `${uniqueSuffix}-${filename}`;
+        const blob = await put(finalName, file, {
+            access: 'public',
+            addRandomSuffix: false
+        });
 
-    // Save to public/uploads
-    const uploadDir = join(process.cwd(), 'public', 'uploads');
-    const path = join(uploadDir, finalName);
-
-    await writeFile(path, buffer);
-
-    return `/uploads/${finalName}`;
+        return blob.url;
+    } catch (e) {
+        console.error('Upload file error', e);
+        throw new Error('Dosya yüklenemedi');
+    }
 }
 
 export async function searchProducts(query: string) {
@@ -1176,20 +1174,23 @@ export async function updateProfile(formData: FormData) {
     let imageUrl = user.image;
 
     if (imageFile && imageFile.size > 0) {
-        // Simple file upload logic reused
         try {
-            const bytes = await imageFile.arrayBuffer();
-            const buffer = Buffer.from(bytes);
             const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
             const filename = imageFile.name.replace(/\s+/g, '-').toLowerCase();
             const finalName = `profile-${uniqueSuffix}-${filename}`;
-            const uploadDir = join(process.cwd(), 'public', 'uploads');
-            const path = join(uploadDir, finalName);
-            await writeFile(path, buffer);
-            imageUrl = `/uploads/${finalName}`;
+
+            // Delete old from Blob if it was a blob URL
+            if (user.image && user.image.includes('public.blob.vercel-storage.com')) {
+                await del(user.image).catch(() => { });
+            }
+
+            const blob = await put(finalName, imageFile, {
+                access: 'public',
+                addRandomSuffix: false
+            });
+            imageUrl = blob.url;
         } catch (e) {
             console.error('Profile image upload error', e);
-            // Continue without image update or throw?
         }
     }
 
@@ -1311,8 +1312,6 @@ export async function createStlModel(formData: FormData) {
     // Upload File (STL)
     let fileUrl = '';
     try {
-        const bytes = await file.arrayBuffer();
-        const buffer = Buffer.from(bytes);
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
         const filename = file.name.replace(/\s+/g, '-').toLowerCase();
 
@@ -1322,27 +1321,31 @@ export async function createStlModel(formData: FormData) {
         }
 
         const finalName = `${prefix}-${uniqueSuffix}-${filename}`;
-        const uploadDir = join(process.cwd(), 'public', 'uploads');
-        const path = join(uploadDir, finalName);
-        await writeFile(path, buffer);
-        fileUrl = `/uploads/${finalName}`;
+
+        const blob = await put(finalName, file, {
+            access: 'public',
+            addRandomSuffix: false
+        });
+        fileUrl = blob.url;
     } catch (e) {
+        console.error('File upload error', e);
         return { error: 'Dosya yüklenemedi.' };
     }
 
     // Upload Image (Preview)
     let imageUrl = '';
     try {
-        const bytes = await image.arrayBuffer();
-        const buffer = Buffer.from(bytes);
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
         const filename = image.name.replace(/\s+/g, '-').toLowerCase();
         const finalName = `preview-${uniqueSuffix}-${filename}`;
-        const uploadDir = join(process.cwd(), 'public', 'uploads');
-        const path = join(uploadDir, finalName);
-        await writeFile(path, buffer);
-        imageUrl = `/uploads/${finalName}`;
+
+        const blob = await put(finalName, image, {
+            access: 'public',
+            addRandomSuffix: false
+        });
+        imageUrl = blob.url;
     } catch (e) {
+        console.error('Preview image upload error', e);
         return { error: 'Görsel yüklenemedi.' };
     }
 
@@ -1441,10 +1444,14 @@ export async function deleteStlModel(formData: FormData) {
         const model = await prisma.stlModel.findUnique({ where: { id } });
         if (!model) return { error: 'Model bulunamadı.' };
 
-        // Delete files
+        // Delete files from Blob
         try {
-            if (model.fileUrl) await unlink(join(process.cwd(), 'public', model.fileUrl)).catch(() => { });
-            if (model.imageUrl) await unlink(join(process.cwd(), 'public', model.imageUrl)).catch(() => { });
+            if (model.fileUrl && model.fileUrl.includes('public.blob.vercel-storage.com')) {
+                await del(model.fileUrl).catch(() => { });
+            }
+            if (model.imageUrl && model.imageUrl.includes('public.blob.vercel-storage.com')) {
+                await del(model.imageUrl).catch(() => { });
+            }
         } catch (e) {
             console.error('File cleanup error', e);
         }
@@ -1493,26 +1500,25 @@ export async function updateStlModel(formData: FormData) {
         // Handle File Update
         if (file && file.size > 0) {
             try {
-                // Delete old
-                if (existing.fileUrl) await unlink(getSafePath(existing.fileUrl)).catch(() => { });
-
-                // Upload new
-                const bytes = await file.arrayBuffer();
-                const buffer = Buffer.from(bytes);
-                const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-                const filename = file.name.replace(/\s+/g, '-').toLowerCase();
-
-                let prefix = 'stl';
-                if (filename.endsWith('.3mf')) {
-                    prefix = '3mf';
+                // Delete old from Blob
+                if (existing.fileUrl && existing.fileUrl.includes('public.blob.vercel-storage.com')) {
+                    await del(existing.fileUrl).catch(() => { });
                 }
 
+                // Upload new to Blob
+                const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+                const filename = file.name.replace(/\s+/g, '-').toLowerCase();
+                let prefix = 'stl';
+                if (filename.endsWith('.3mf')) prefix = '3mf';
                 const finalName = `${prefix}-${uniqueSuffix}-${filename}`;
-                const uploadDir = join(process.cwd(), 'public', 'uploads');
-                const path = join(uploadDir, finalName);
-                await writeFile(path, buffer);
-                fileUrl = `/uploads/${finalName}`;
+
+                const blob = await put(finalName, file, {
+                    access: 'public',
+                    addRandomSuffix: false
+                });
+                fileUrl = blob.url;
             } catch (e) {
+                console.error('File update error', e);
                 return { error: 'Dosya güncellenemedi.' };
             }
         }
@@ -1520,20 +1526,23 @@ export async function updateStlModel(formData: FormData) {
         // Handle Image Update
         if (image && image.size > 0) {
             try {
-                // Delete old
-                if (existing.imageUrl) await unlink(getSafePath(existing.imageUrl)).catch(() => { });
+                // Delete old from Blob
+                if (existing.imageUrl && existing.imageUrl.includes('public.blob.vercel-storage.com')) {
+                    await del(existing.imageUrl).catch(() => { });
+                }
 
-                // Upload new
-                const bytes = await image.arrayBuffer();
-                const buffer = Buffer.from(bytes);
+                // Upload new to Blob
                 const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
                 const filename = image.name.replace(/\s+/g, '-').toLowerCase();
                 const finalName = `preview-${uniqueSuffix}-${filename}`;
-                const uploadDir = join(process.cwd(), 'public', 'uploads');
-                const path = join(uploadDir, finalName);
-                await writeFile(path, buffer);
-                imageUrl = `/uploads/${finalName}`;
+
+                const blob = await put(finalName, image, {
+                    access: 'public',
+                    addRandomSuffix: false
+                });
+                imageUrl = blob.url;
             } catch (e) {
+                console.error('Preview image update error', e);
                 return { error: 'Görsel güncellenemedi.' };
             }
         }
@@ -1613,16 +1622,18 @@ export async function createHeroSlide(formData: FormData) {
 
     let imageUrl = '';
     try {
-        const bytes = await image.arrayBuffer();
-        const buffer = Buffer.from(bytes);
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
         const filename = image.name.replace(/\s+/g, '-').toLowerCase();
         const finalName = `hero-${uniqueSuffix}-${filename}`;
-        const uploadDir = join(process.cwd(), 'public', 'uploads');
-        const path = join(uploadDir, finalName);
-        await writeFile(path, buffer);
-        imageUrl = `/uploads/${finalName}`;
+
+        // Vercel Blob Upload
+        const blob = await put(finalName, image, {
+            access: 'public',
+            addRandomSuffix: false
+        });
+        imageUrl = blob.url;
     } catch (e) {
+        console.error('Image upload error', e);
         return { error: 'Görsel yüklenemedi.' };
     }
 
@@ -1630,15 +1641,16 @@ export async function createHeroSlide(formData: FormData) {
     let bgImageUrl = '';
     if (bgImage && bgImage.size > 0) {
         try {
-            const bytes = await bgImage.arrayBuffer();
-            const buffer = Buffer.from(bytes);
             const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
             const filename = bgImage.name.replace(/\s+/g, '-').toLowerCase();
             const finalName = `hero-bg-${uniqueSuffix}-${filename}`;
-            const uploadDir = join(process.cwd(), 'public', 'uploads');
-            const path = join(uploadDir, finalName);
-            await writeFile(path, buffer);
-            bgImageUrl = `/uploads/${finalName}`;
+
+            // Vercel Blob Upload
+            const blob = await put(finalName, bgImage, {
+                access: 'public',
+                addRandomSuffix: false
+            });
+            bgImageUrl = blob.url;
         } catch (e) {
             console.error('BG Image upload error', e);
         }
@@ -1677,20 +1689,23 @@ export async function updateHeroSlide(formData: FormData) {
 
         if (image && image.size > 0) {
             try {
-                // Delete old
-                if (existing.imageUrl) await unlink(join(process.cwd(), 'public', existing.imageUrl)).catch(() => { });
+                // Delete old from Blob if it was a blob URL
+                if (existing.imageUrl && existing.imageUrl.includes('public.blob.vercel-storage.com')) {
+                    await del(existing.imageUrl).catch(() => { });
+                }
 
-                // Upload new
-                const bytes = await image.arrayBuffer();
-                const buffer = Buffer.from(bytes);
+                // Upload new to Vercel Blob
                 const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
                 const filename = image.name.replace(/\s+/g, '-').toLowerCase();
                 const finalName = `hero-${uniqueSuffix}-${filename}`;
-                const uploadDir = join(process.cwd(), 'public', 'uploads');
-                const path = join(uploadDir, finalName);
-                await writeFile(path, buffer);
-                imageUrl = `/uploads/${finalName}`;
+
+                const blob = await put(finalName, image, {
+                    access: 'public',
+                    addRandomSuffix: false
+                });
+                imageUrl = blob.url;
             } catch (e) {
+                console.error('Image update error', e);
                 return { error: 'Görsel güncellenemedi.' };
             }
         }
@@ -1700,19 +1715,21 @@ export async function updateHeroSlide(formData: FormData) {
 
         if (bgImage && bgImage.size > 0) {
             try {
-                // Delete old
-                if (existing.bgImageUrl) await unlink(join(process.cwd(), 'public', existing.bgImageUrl)).catch(() => { });
+                // Delete old from Blob
+                if (existing.bgImageUrl && existing.bgImageUrl.includes('public.blob.vercel-storage.com')) {
+                    await del(existing.bgImageUrl).catch(() => { });
+                }
 
-                // Upload new
-                const bytes = await bgImage.arrayBuffer();
-                const buffer = Buffer.from(bytes);
+                // Upload new to Vercel Blob
                 const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
                 const filename = bgImage.name.replace(/\s+/g, '-').toLowerCase();
                 const finalName = `hero-bg-${uniqueSuffix}-${filename}`;
-                const uploadDir = join(process.cwd(), 'public', 'uploads');
-                const path = join(uploadDir, finalName);
-                await writeFile(path, buffer);
-                bgImageUrl = `/uploads/${finalName}`;
+
+                const blob = await put(finalName, bgImage, {
+                    access: 'public',
+                    addRandomSuffix: false
+                });
+                bgImageUrl = blob.url;
             } catch (e) {
                 console.error('BG Image update error', e);
             }
@@ -1738,7 +1755,12 @@ export async function deleteHeroSlide(formData: FormData) {
         const slide = await prisma.heroSlide.findUnique({ where: { id } });
         if (!slide) return { error: 'Slayt bulunamadı.' };
 
-        if (slide.imageUrl) await unlink(join(process.cwd(), 'public', slide.imageUrl)).catch(() => { });
+        if (slide.imageUrl && slide.imageUrl.includes('public.blob.vercel-storage.com')) {
+            await del(slide.imageUrl).catch(() => { });
+        }
+        if (slide.bgImageUrl && slide.bgImageUrl.includes('public.blob.vercel-storage.com')) {
+            await del(slide.bgImageUrl).catch(() => { });
+        }
 
         await prisma.heroSlide.delete({ where: { id } });
         revalidatePath('/');

@@ -2,8 +2,7 @@
 
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
-import { writeFile } from 'fs/promises';
-import { join } from 'path';
+import { put } from '@vercel/blob';
 
 export async function submitFigureOrder(formData: FormData) {
     const name = formData.get('name') as string;
@@ -18,19 +17,16 @@ export async function submitFigureOrder(formData: FormData) {
 
     if (file && file.size > 0) {
         try {
-            const bytes = await file.arrayBuffer();
-            const buffer = Buffer.from(bytes);
-
             // Unique filename
             const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
             const extension = file.type.split('/')[1] || 'jpg';
             const filename = `figure-${uniqueSuffix}.${extension}`;
 
-            const uploadDir = join(process.cwd(), 'public', 'uploads');
-            const path = join(uploadDir, filename);
-
-            await writeFile(path, buffer);
-            imageUrl = `/uploads/${filename}`;
+            const blob = await put(filename, file, {
+                access: 'public',
+                addRandomSuffix: false
+            });
+            imageUrl = blob.url;
         } catch (error) {
             console.error('File upload failed:', error);
             return { success: false, message: 'Görsel yüklenirken bir hata oluştu.' };
