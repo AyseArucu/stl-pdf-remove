@@ -10,14 +10,15 @@ interface PageProps {
     };
 }
 
-export default async function EditCategoryPage({ params }: PageProps) {
+export default async function EditCategoryPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
     const session = (await cookies()).get('user_session');
     if (!session) {
         redirect('/erashu/admin/login');
     }
 
     const category = await prisma.category.findUnique({
-        where: { id: params.id }
+        where: { id: id }
     });
 
     if (!category) {

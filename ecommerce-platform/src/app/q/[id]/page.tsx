@@ -43,8 +43,9 @@ const getFontClass = (fontId: string) => {
 // Ensure dynamic rendering so we fetch fresh data
 export const dynamic = 'force-dynamic';
 
-export default async function RedirectPage({ params }: { params: { id: string } }) {
-    const qr = await getQrCode(params.id);
+export default async function RedirectPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
+    const qr = await getQrCode(id);
 
     // If fetch fails or ID doesn't exist, show 404 or generic error
     if (!qr) {
@@ -59,11 +60,11 @@ export default async function RedirectPage({ params }: { params: { id: string } 
     }
 
     const cookieStore = await cookies();
-    const hasAccess = cookieStore.has(`qr_access_${params.id}`);
+    const hasAccess = cookieStore.has(`qr_access_${id}`);
 
     // If password exists and no cookie, show password screen
     if (qr.password && !hasAccess) {
-        return <PasswordClient params={params} />;
+        return <PasswordClient params={{ id }} />;
     }
 
     // Attempt to parse design for coupon, link_list or menu

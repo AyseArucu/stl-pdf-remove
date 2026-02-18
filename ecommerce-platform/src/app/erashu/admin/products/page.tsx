@@ -6,7 +6,8 @@ import { redirect } from 'next/navigation';
 import ProductStatusToggle from '@/components/admin/ProductStatusToggle';
 import AdminSearch from '@/components/admin/AdminSearch';
 
-export default async function AdminProductsPage({ searchParams }: { searchParams: { q?: string } }) {
+export default async function AdminProductsPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
+    const { q } = await searchParams;
     const session = (await cookies()).get('user_session');
     if (!session) {
         redirect('/erashu/admin/login');

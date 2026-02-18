@@ -7,7 +7,6 @@ import { cookies } from 'next/headers';
 import { randomUUID } from 'crypto';
 import { sendPasswordResetEmail, sendVerificationEmail } from '@/lib/email';
 import { put, del } from '@vercel/blob';
-import { join } from 'path';
 
 
 export async function createProduct(formData: FormData) {

@@ -5,8 +5,9 @@ import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import { FaArrowLeft, FaCalendar, FaEye, FaUser, FaLaptopCode, FaCube, FaQrcode, FaDownload, FaEraser, FaFilePdf, FaMagic, FaLink, FaInstagram, FaYoutube, FaTwitter, FaLinkedin } from 'react-icons/fa';
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-    const post = await getBlogPostBySlug(params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
+    const post = await getBlogPostBySlug(slug);
     if (!post) return { title: 'Sayfa Bulunamadı' };
 
     return {
@@ -20,8 +21,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     };
 }
 
-export default async function BlogPostPage({ params }: { params: { slug: string } }) {
-    const post = await getBlogPostBySlug(params.slug);
+export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
+    const post = await getBlogPostBySlug(slug);
     const settings = await prisma.contactSettings.findFirst();
     const AdSpace = (await import('@/components/blog/AdSpace')).default;
 

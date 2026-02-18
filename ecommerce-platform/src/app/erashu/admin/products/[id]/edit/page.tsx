@@ -4,14 +4,15 @@ import { notFound, redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import ProductForm from '@/components/admin/ProductForm';
 
-export default async function EditProductPage({ params }: { params: { id: string } }) {
+export default async function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
     const session = (await cookies()).get('user_session');
     if (!session) {
         redirect('/erashu/admin/login');
     }
 
     const product = await prisma.product.findUnique({
-        where: { id: params.id },
+        where: { id },
         include: {
             options: true,
             features: true,

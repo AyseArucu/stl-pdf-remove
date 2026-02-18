@@ -24,9 +24,10 @@ import StlInteractions from '@/components/StlInteractions';
 // Force dynamic because of user session check
 export const dynamic = 'force-dynamic';
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
     const model = await prisma.stlModel.findUnique({
-        where: { id: params.id }
+        where: { id }
     });
 
     if (!model) return { title: 'Model Bulunamadı' };
@@ -37,9 +38,10 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
     };
 }
 
-export default async function StlDetailPage({ params }: { params: { id: string } }) {
+export default async function StlDetailPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
     const model = await prisma.stlModel.findUnique({
-        where: { id: params.id },
+        where: { id },
         include: { tags: true }
     });
 

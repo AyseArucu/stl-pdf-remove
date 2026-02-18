@@ -1,7 +1,16 @@
+/// <reference types="@react-three/fiber" />
 'use client';
 
 import React, { Suspense, useEffect, useState, useMemo } from 'react';
-import { Canvas, useLoader } from '@react-three/fiber';
+import { Canvas, useLoader, ThreeElements } from '@react-three/fiber';
+
+declare global {
+    namespace React {
+        namespace JSX {
+            interface IntrinsicElements extends ThreeElements { }
+        }
+    }
+}
 import { OrbitControls, Center, PerspectiveCamera, Html, useProgress } from '@react-three/drei';
 import { STLLoader, ThreeMFLoader } from 'three-stdlib';
 import * as THREE from 'three';
