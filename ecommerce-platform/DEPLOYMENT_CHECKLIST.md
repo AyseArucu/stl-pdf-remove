@@ -14,13 +14,14 @@
 - Set **Root Directory** to `ecommerce-platform`.
 
 ### 2. Environment Variables
-- Add the following keys in the Vercel Dashboard:
-  - `DATABASE_URL` (Your production DB URL)
-  - `PRISMA_FIELD_ENCRYPTION_KEY`
-  - `BLOB_READ_WRITE_TOKEN`
-  - `NEXTAUTH_SECRET`
-  - `NEXT_PUBLIC_SITE_URL`
-  - `RESEND_API_KEY`
+- Add the following keys in the Vercel Dashboard (and `.env.local` for local troubleshooting):
+  - `DATABASE_URL` (Production database connection string)
+  - `PRISMA_FIELD_ENCRYPTION_KEY` (For encrypting sensitive Prisma fields)
+  - `BLOB_READ_WRITE_TOKEN` (Vercel Blob Storage token)
+  - `NEXTAUTH_SECRET` (Secret for NextAuth.js authentication)
+  - `NEXT_PUBLIC_SITE_URL` (Base URL of the live site)
+  - `RESEND_API_KEY` (API key for Resend email service)
+  - `NEXT_PUBLIC_APP_URL` (Used in QR code short URL generation)
 
 ### 3. Build & Deployment
 - Check that the framework preset is set to **Next.js**.
