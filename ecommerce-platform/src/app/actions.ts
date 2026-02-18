@@ -1508,7 +1508,7 @@ export async function updateStlModel(formData: FormData) {
                 if (filename.endsWith('.3mf')) prefix = '3mf';
                 const finalName = `${prefix}-${uniqueSuffix}-${filename}`;
 
-                const blob = await put(finalName, file, {
+                const blob = await put(finalName, file.stream(), {
                     access: 'public',
                     addRandomSuffix: false
                 });

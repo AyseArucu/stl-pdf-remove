@@ -2,6 +2,9 @@
 const nextConfig = {
     experimental: {
         serverComponentsExternalPackages: ['@imgly/background-removal', 'onnxruntime-web'],
+        serverActions: {
+            bodySizeLimit: '10mb',
+        },
     },
     eslint: {
         ignoreDuringBuilds: true,

@@ -38,9 +38,12 @@ export async function login(formData: FormData) {
                     image: user.image
                 };
 
+                const callbackUrl = formData.get('callbackUrl') as string;
                 cookies().set('user_session', JSON.stringify(userSession), { httpOnly: true, path: '/' });
                 console.log('Admin session created successfully');
-                redirect('/erashu/admin');
+
+                const target = (callbackUrl && callbackUrl.startsWith('/')) ? callbackUrl : '/erashu/admin';
+                redirect(target);
             } else {
                 console.log('Password mismatch for user:', email);
                 // Redirect with explicit error

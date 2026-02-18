@@ -49,6 +49,10 @@ const AuthModal = ({
                 // Update Global State
                 setUser(result.user as any);
                 onClose();
+                // Redirect if redirectUrl is provided
+                if (redirectUrl) {
+                    window.location.href = redirectUrl;
+                }
             } else {
                 setError(result.message || 'Giriş başarısız.');
             }
