@@ -1,11 +1,11 @@
+import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
 import { cookies } from 'next/headers';
 
 export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
-    const prisma = new PrismaClient();
+
     try {
         const body = await req.json();
         const { targetUrl, name, password, design, type, data } = body;
