@@ -1,12 +1,14 @@
 import Link from 'next/link';
 import { loginUser } from '@/app/actions';
 
-export default function LoginPage({
+export default async function LoginPage({
     searchParams,
 }: {
-    searchParams: { [key: string]: string | string[] | undefined };
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-    const callbackUrl = typeof searchParams.callbackUrl === 'string' ? searchParams.callbackUrl : undefined;
+    const resolvedSearchParams = await searchParams;
+    const { error } = resolvedSearchParams;
+    const callbackUrl = typeof resolvedSearchParams.callbackUrl === 'string' ? resolvedSearchParams.callbackUrl : undefined;
 
     return (
         <main className="container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh' }}>
@@ -17,12 +19,12 @@ export default function LoginPage({
                 </div>
 
                 <form action={loginUser} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-                    {searchParams.error && (
+                    {error && (
                         <div style={{ backgroundColor: '#fee2e2', color: '#dc2626', padding: '0.75rem', borderRadius: '0.5rem', fontSize: '0.9rem', textAlign: 'center' }}>
-                            {searchParams.error === 'InvalidCredentials' && 'E-posta veya şifre hatalı.'}
-                            {searchParams.error === 'EmailNotVerified' && 'Lütfen e-posta adresinizi doğrulayın.'}
-                            {searchParams.error === 'SystemError' && 'Sistem hatası oluştu. Lütfen tekrar deneyin.'}
-                            {!['InvalidCredentials', 'EmailNotVerified', 'SystemError'].includes(searchParams.error as string) && 'Giriş yapılamadı.'}
+                            {error === 'InvalidCredentials' && 'E-posta veya şifre hatalı.'}
+                            {error === 'EmailNotVerified' && 'Lütfen e-posta adresinizi doğrulayın.'}
+                            {error === 'SystemError' && 'Sistem hatası oluştu. Lütfen tekrar deneyin.'}
+                            {!['InvalidCredentials', 'EmailNotVerified', 'SystemError'].includes(error as string) && 'Giriş yapılamadı.'}
                         </div>
                     )}
                     {callbackUrl && <input type="hidden" name="callbackUrl" value={callbackUrl} />}

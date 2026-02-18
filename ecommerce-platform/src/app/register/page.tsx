@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import { registerUser } from '@/app/actions';
 
-export default function RegisterPage({ searchParams }: { searchParams: { error?: string, callbackUrl?: string } }) {
-    const isEmailExists = searchParams.error === 'EmailAlreadyExists';
-    const callbackUrl = searchParams.callbackUrl;
+export default async function RegisterPage({ searchParams }: { searchParams: Promise<{ error?: string, callbackUrl?: string }> }) {
+    const { error, callbackUrl } = await searchParams;
+    const isEmailExists = error === 'EmailAlreadyExists';
 
     return (
         <main className="container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh' }}>
@@ -70,7 +70,7 @@ export default function RegisterPage({ searchParams }: { searchParams: { error?:
                             />
                         </div>
 
-                        {searchParams.error === 'RegistrationFailed' && (
+                        {error === 'RegistrationFailed' && (
                             <div style={{ color: 'red', textAlign: 'center', fontSize: '0.9rem' }}>
                                 Kayıt sırasında bir hata oluştu. Lütfen tekrar deneyin.
                             </div>

@@ -2,9 +2,10 @@ import StlForm from '@/components/admin/StlForm';
 import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 
-export default async function EditStlPage({ params }: { params: { id: string } }) {
+export default async function EditStlPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
     const model = await prisma.stlModel.findUnique({
-        where: { id: params.id },
+        where: { id },
         include: { tags: true }
     });
 

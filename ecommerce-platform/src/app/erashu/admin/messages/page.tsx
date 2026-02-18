@@ -2,8 +2,9 @@ import MessageRow from '@/components/admin/MessageRow';
 import { prisma } from '@/lib/prisma';
 import AdminSearch from '@/components/admin/AdminSearch';
 
-export default async function AdminMessagesPage({ searchParams }: { searchParams: { q?: string } }) {
-    const query = searchParams.q?.toLowerCase();
+export default async function AdminMessagesPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
+    const { q } = await searchParams;
+    const query = q?.toLowerCase();
 
     const where: any = {};
     if (query) {

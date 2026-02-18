@@ -11,14 +11,8 @@ import RecommendedProducts from '@/components/RecommendedProducts';
 import ProductCollections from '@/components/ProductCollections';
 import { notFound } from 'next/navigation';
 
-interface PageProps {
-    params: {
-        id: string;
-    };
-}
-
-export default async function ProductDetailPage({ params }: PageProps) {
-    const productId = params.id;
+export default async function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id: productId } = await params;
 
     // Increment View Count (Fire and forget, or await if critical)
     await incrementProductView(productId);

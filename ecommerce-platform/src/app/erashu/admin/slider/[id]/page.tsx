@@ -6,9 +6,10 @@ import { notFound } from 'next/navigation';
 
 import DeleteSlideButton from './DeleteSlideButton';
 
-export default async function EditSlidePage({ params }: { params: { id: string } }) {
+export default async function EditSlidePage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
     const slide = await prisma.heroSlide.findUnique({
-        where: { id: params.id }
+        where: { id }
     });
 
     if (!slide) {

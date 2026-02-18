@@ -3,8 +3,9 @@ import { deleteStlModel } from '@/app/actions';
 import Link from 'next/link';
 import AdminSearch from '@/components/admin/AdminSearch';
 
-export default async function AdminStlModelsPage({ searchParams }: { searchParams: { q?: string } }) {
-    const query = searchParams.q?.toLowerCase();
+export default async function AdminStlModelsPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
+    const { q } = await searchParams;
+    const query = q?.toLowerCase();
     const where: any = {};
     if (query) {
         where.name = { contains: query };

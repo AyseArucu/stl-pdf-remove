@@ -27,7 +27,7 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
         console.error("Permission check failed", e);
     }
 
-    const query = searchParams.q?.toLowerCase();
+    const query = q?.toLowerCase();
 
     // Build filter
     const where: any = {};

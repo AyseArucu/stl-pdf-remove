@@ -10,8 +10,9 @@ interface PageProps {
     }
 }
 
-export default async function CollectionPage({ params }: PageProps) {
-    const slug = params.slug.toLowerCase();
+export default async function CollectionPage({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug: rawSlug } = await params;
+    const slug = rawSlug.toLowerCase();
 
     // Define a unified Collection type for UI
     type UICollection = {

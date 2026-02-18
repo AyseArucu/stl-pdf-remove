@@ -9,9 +9,10 @@ interface PageProps {
     }
 }
 
-export default async function ServicePaymentPage({ params }: PageProps) {
+export default async function ServicePaymentPage({ params }: { params: Promise<{ token: string }> }) {
+    const { token } = await params;
     const request = await prisma.serviceRequest.findFirst({
-        where: { paymentToken: params.token }
+        where: { paymentToken: token }
     });
 
     if (!request) {
@@ -60,7 +61,7 @@ export default async function ServicePaymentPage({ params }: PageProps) {
                 <div className="bg-white p-6 rounded-xl shadow-sm">
                     <h2 className="text-xl font-bold text-gray-800 mb-6">Kart Bilgileri</h2>
                     <ServicePaymentForm
-                        token={params.token}
+                        token={token}
                         amount={request.offerPrice || 0}
                         requestName={request.siteType}
                     />

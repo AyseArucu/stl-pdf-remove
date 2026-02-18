@@ -9,9 +9,10 @@ interface PageProps {
     };
 }
 
-export default async function EditCollectionPage({ params }: PageProps) {
+export default async function EditCollectionPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
     const collection = await prisma.collection.findUnique({
-        where: { id: params.id },
+        where: { id },
         include: { products: { select: { id: true } } }
     });
 

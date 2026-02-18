@@ -1,6 +1,7 @@
 import { login } from '../auth';
 
-export default function LoginPage({ searchParams }: { searchParams: { error?: string } }) {
+export default async function LoginPage({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
+    const { error } = await searchParams;
     return (
         <main className="container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
             <div style={{
@@ -14,7 +15,7 @@ export default function LoginPage({ searchParams }: { searchParams: { error?: st
             }}>
                 <h1 style={{ marginBottom: '1.5rem', textAlign: 'center' }}>Admin Girişi</h1>
 
-                {searchParams.error && (
+                {error && (
                     <div style={{
                         backgroundColor: '#fef2f2',
                         color: '#ef4444',

@@ -7,8 +7,9 @@ export const metadata = {
     description: 'En yeni ve en popüler ürünlerimizi keşfedin.',
 };
 
-export default async function ProductsPage({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
-    const searchTerm = typeof searchParams.search === 'string' ? searchParams.search.toLowerCase() : '';
+export default async function ProductsPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
+    const resolvedSearchParams = await searchParams;
+    const searchTerm = typeof resolvedSearchParams.search === 'string' ? resolvedSearchParams.search.toLowerCase() : '';
 
     const categories = await prisma.category.findMany();
 

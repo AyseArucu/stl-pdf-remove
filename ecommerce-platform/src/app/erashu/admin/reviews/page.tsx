@@ -4,8 +4,9 @@ import { deleteReview } from '@/app/actions';
 import ReviewDeleteButton from './ReviewDeleteButton';
 import AdminSearch from '@/components/admin/AdminSearch';
 
-export default async function AdminReviewsPage({ searchParams }: { searchParams: { q?: string } }) {
-    const query = searchParams.q?.toLowerCase();
+export default async function AdminReviewsPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
+    const { q } = await searchParams;
+    const query = q?.toLowerCase();
 
     const where: any = {};
     if (query) {

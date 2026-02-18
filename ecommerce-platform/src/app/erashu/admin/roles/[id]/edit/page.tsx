@@ -4,8 +4,8 @@ import { updateRole, deleteRole } from '@/actions/rbac-actions';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 
-export default async function EditRolePage({ params }: { params: { id: string } }) {
-    const roleId = params.id;
+export default async function EditRolePage({ params }: { params: Promise<{ id: string }> }) {
+    const { id: roleId } = await params;
 
     // Fetch role with its permissions
     const role = await prisma.role.findUnique({

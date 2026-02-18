@@ -5,7 +5,8 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import AdminSearch from '@/components/admin/AdminSearch';
 
-export default async function CategoriesPage({ searchParams }: { searchParams: { q?: string } }) {
+export default async function CategoriesPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
+    const { q } = await searchParams;
     const session = (await cookies()).get('user_session');
     if (!session) {
         redirect('/erashu/admin/login');
@@ -14,7 +15,7 @@ export default async function CategoriesPage({ searchParams }: { searchParams: {
     const allCategories = await prisma.category.findMany();
     let categories = allCategories;
 
-    const query = searchParams.q?.toLowerCase();
+    const query = q?.toLowerCase();
     if (query) {
         const matches = categories.filter(c => c.name.toLowerCase().includes(query));
         const visibleIds = new Set(matches.map(c => c.id));

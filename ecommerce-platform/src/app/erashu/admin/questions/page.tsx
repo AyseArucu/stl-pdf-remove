@@ -3,8 +3,9 @@ import Link from 'next/link';
 import { answerQuestion, deleteQuestion } from '@/app/actions';
 import AdminSearch from '@/components/admin/AdminSearch';
 
-export default async function AdminQuestionsPage({ searchParams }: { searchParams: { q?: string } }) {
-    const query = searchParams.q?.toLowerCase();
+export default async function AdminQuestionsPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
+    const { q } = await searchParams;
+    const query = q?.toLowerCase();
 
     const where: any = {};
     if (query) {
