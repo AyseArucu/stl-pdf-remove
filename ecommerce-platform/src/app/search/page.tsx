@@ -3,9 +3,10 @@ import { prisma } from '@/lib/prisma';
 import { Product, Category } from '@/lib/db';
 import ProductListing from '@/components/ProductListing';
 
-export default async function SearchPage({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
-    const searchTerm = typeof searchParams.search === 'string' ? searchParams.search.toLowerCase() : '';
-    const sort = typeof searchParams.sort === 'string' ? searchParams.sort : '';
+export default async function SearchPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
+    const resolvedSearchParams = await searchParams;
+    const searchTerm = typeof resolvedSearchParams.search === 'string' ? resolvedSearchParams.search.toLowerCase() : '';
+    const sort = typeof resolvedSearchParams.sort === 'string' ? resolvedSearchParams.sort : '';
 
     const categoriesRaw = await prisma.category.findMany({ where: { parentId: null } });
 

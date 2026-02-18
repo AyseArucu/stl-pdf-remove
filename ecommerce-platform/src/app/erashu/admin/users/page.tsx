@@ -6,13 +6,14 @@ import UserRoleSelect from './UserRoleSelect';
 import UserStatusToggle from './UserStatusToggle';
 import AdminSearch from '@/components/admin/AdminSearch';
 
-export default async function AdminUsersPage({ searchParams }: { searchParams: { q?: string } }) {
+export default async function AdminUsersPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
+    const { q } = await searchParams;
     const session = (await cookies()).get('user_session');
     if (!session) {
         redirect('/erashu/admin/login');
     }
 
-    const query = searchParams.q?.toLowerCase();
+    const query = q?.toLowerCase();
     const where: any = {};
     if (query) {
         where.OR = [

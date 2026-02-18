@@ -9,7 +9,8 @@ import { redirect } from 'next/navigation';
 import { formatRelativeTime } from '@/lib/dateUtils';
 import AdminSearch from '@/components/admin/AdminSearch';
 
-export default async function AdminOrdersPage({ searchParams }: { searchParams: { q?: string } }) {
+export default async function AdminOrdersPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
+    const { q } = await searchParams;
     const session = (await cookies()).get('user_session');
     if (!session) {
         redirect('/erashu/admin/login');

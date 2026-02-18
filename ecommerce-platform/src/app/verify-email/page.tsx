@@ -2,8 +2,8 @@ import { verifyEmail } from '@/app/actions';
 import Link from 'next/link';
 import { FaCheckCircle, FaExclamationTriangle } from 'react-icons/fa';
 
-export default async function VerifyEmailPage({ searchParams }: { searchParams: { token?: string } }) {
-    const token = searchParams.token;
+export default async function VerifyEmailPage({ searchParams }: { searchParams: Promise<{ token?: string }> }) {
+    const { token } = await searchParams;
 
     if (!token) {
         return (
