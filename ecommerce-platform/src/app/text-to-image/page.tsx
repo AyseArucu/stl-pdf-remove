@@ -7,8 +7,7 @@ export const revalidate = 0;
 
 // Dynamic import of the client component with SSR disabled
 const TextToImageWrapper = dynamic(
-    () => import('@/components/TextToImageWrapper'),
-    { ssr: false }
+    () => import('@/components/TextToImageWrapper')
 );
 
 export default function TextToImagePage() {
