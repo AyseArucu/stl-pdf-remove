@@ -1,6 +1,5 @@
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
-import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 import { checkUserSession } from '@/app/actions/auth';

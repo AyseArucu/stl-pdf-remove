@@ -5,7 +5,7 @@ import { getUserOrders, getSuggestedProducts } from '@/app/actions';
 
 export default async function OrdersPage() {
     // Get user session
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const sessionConfig = cookieStore.get('user_session');
 
     if (!sessionConfig?.value) {

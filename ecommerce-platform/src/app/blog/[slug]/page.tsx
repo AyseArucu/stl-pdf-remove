@@ -289,7 +289,7 @@ async function BlogCommentsWrapper({ postId }: { postId: string }) {
     const BlogComments = (await import('@/components/blog/BlogComments')).default;
 
     const comments = await getBlogComments(postId);
-    const session = cookies().get('user_session')?.value;
+    const session = (await cookies()).get('user_session')?.value;
     const user = session ? JSON.parse(session) : null;
 
     return <BlogComments postId={postId} currentUser={user} existingComments={comments} />;

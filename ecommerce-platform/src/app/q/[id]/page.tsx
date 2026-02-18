@@ -58,7 +58,7 @@ export default async function RedirectPage({ params }: { params: { id: string } 
         );
     }
 
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const hasAccess = cookieStore.has(`qr_access_${params.id}`);
 
     // If password exists and no cookie, show password screen

@@ -23,12 +23,12 @@ import { UserProvider } from '@/context/UserContext';
 
 import SideAdsWrapper from '@/components/ads/SideAdsWrapper';
 
-export default function RootLayout({
+export default async function RootLayout({
     children,
 }: {
     children: React.ReactNode
 }) {
-    const session = cookies().get('user_session')?.value;
+    const session = (await cookies()).get('user_session')?.value;
     let user = null;
     try {
         user = session ? JSON.parse(session) : null;

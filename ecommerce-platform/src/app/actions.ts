@@ -479,7 +479,8 @@ export async function loginUser(formData: FormData) {
         // }
 
         try {
-            cookies().set('user_session', JSON.stringify(user), {
+            const cookieStore = await cookies();
+            cookieStore.set('user_session', JSON.stringify(user), {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
                 maxAge: 60 * 60 * 24 * 7,
@@ -505,7 +506,7 @@ export async function loginUser(formData: FormData) {
 }
 
 export async function logoutUser() {
-    cookies().delete('user_session');
+    (await cookies()).delete('user_session');
     redirect('/');
 }
 
@@ -896,7 +897,8 @@ export async function getSuggestedProducts(limit: number = 8) {
 }
 
 export async function toggleProductFavorite(productId: string, isFavorite: boolean) {
-    const session = cookies().get('user_session')?.value;
+    const cookieStore = await cookies();
+    const session = cookieStore.get('user_session')?.value;
     if (!session) return;
     const user = JSON.parse(session);
 
@@ -1050,7 +1052,8 @@ export async function toggleUserStatus(userId: string, isActive: boolean) {
 
 // Cart Actions
 export async function getCart() {
-    const session = cookies().get('user_session')?.value;
+    const cookieStore = await cookies();
+    const session = cookieStore.get('user_session')?.value;
     if (!session) return null;
     const user = JSON.parse(session);
 
@@ -1073,7 +1076,8 @@ export async function getCart() {
 }
 
 export async function addToCartServer(productId: string, quantity: number = 1) {
-    const session = cookies().get('user_session')?.value;
+    const cookieStore = await cookies();
+    const session = cookieStore.get('user_session')?.value;
     if (!session) return;
     const user = JSON.parse(session);
 
@@ -1122,7 +1126,8 @@ export async function addToCartServer(productId: string, quantity: number = 1) {
 }
 
 export async function removeFromCartServer(productId: string) {
-    const session = cookies().get('user_session')?.value;
+    const cookieStore = await cookies();
+    const session = cookieStore.get('user_session')?.value;
     if (!session) return;
     const user = JSON.parse(session);
 
@@ -1143,7 +1148,8 @@ export async function removeFromCartServer(productId: string) {
 }
 
 export async function clearCartServer() {
-    const session = cookies().get('user_session')?.value;
+    const cookieStore = await cookies();
+    const session = cookieStore.get('user_session')?.value;
     if (!session) return;
     const user = JSON.parse(session);
 
@@ -1165,7 +1171,8 @@ export async function clearCartServer() {
 // --- Profile Management Actions ---
 
 export async function updateProfile(formData: FormData) {
-    const session = cookies().get('user_session')?.value;
+    const cookieStore = await cookies();
+    const session = cookieStore.get('user_session')?.value;
     if (!session) return { error: 'Oturum açmanız gerekiyor.' };
     const user = JSON.parse(session);
 
@@ -1207,7 +1214,8 @@ export async function updateProfile(formData: FormData) {
         });
 
         // Update session cookie
-        cookies().set('user_session', JSON.stringify(updatedUser), {
+        const cookieStore = await cookies();
+        cookieStore.set('user_session', JSON.stringify(updatedUser), {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             maxAge: 60 * 60 * 24 * 7,
@@ -1223,7 +1231,8 @@ export async function updateProfile(formData: FormData) {
 }
 
 export async function changePassword(formData: FormData) {
-    const session = cookies().get('user_session')?.value;
+    const cookieStore = await cookies();
+    const session = cookieStore.get('user_session')?.value;
     if (!session) return { error: 'Oturum açmanız gerekiyor.' };
     const user = JSON.parse(session);
 
@@ -1255,7 +1264,8 @@ export async function changePassword(formData: FormData) {
 }
 
 export async function requestEmailChange(formData: FormData) {
-    const session = cookies().get('user_session')?.value;
+    const cookieStore = await cookies();
+    const session = cookieStore.get('user_session')?.value;
     if (!session) return { error: 'Oturum açmanız gerekiyor.' };
     const user = JSON.parse(session);
 

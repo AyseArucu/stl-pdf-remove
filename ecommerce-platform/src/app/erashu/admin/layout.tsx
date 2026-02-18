@@ -10,7 +10,7 @@ export default async function AdminLayout({
     children: React.ReactNode
 }) {
     // Check session for ADMIN role
-    const sessionCookie = cookies().get('user_session');
+    const sessionCookie = (await cookies()).get('user_session');
     let isAdmin = false;
     let permissions: string[] = [];
 

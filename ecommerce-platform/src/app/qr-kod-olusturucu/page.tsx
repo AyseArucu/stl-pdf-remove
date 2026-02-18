@@ -7,8 +7,8 @@ export const metadata: Metadata = {
     description: 'Hızlı, ücretsiz ve kolay QR kod oluşturucu. Link, metin veya numara girin, anında QR kodunuzu oluşturun ve indirin.',
 };
 
-export default function QrCodePage() {
-    const session = cookies().get('user_session')?.value;
+export default async function QrCodePage() {
+    const session = (await cookies()).get('user_session')?.value;
     let user = null;
     try {
         user = session ? JSON.parse(session) : null;

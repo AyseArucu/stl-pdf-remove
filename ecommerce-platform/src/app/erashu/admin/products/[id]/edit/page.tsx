@@ -5,7 +5,7 @@ import { cookies } from 'next/headers';
 import ProductForm from '@/components/admin/ProductForm';
 
 export default async function EditProductPage({ params }: { params: { id: string } }) {
-    const session = cookies().get('user_session');
+    const session = (await cookies()).get('user_session');
     if (!session) {
         redirect('/erashu/admin/login');
     }

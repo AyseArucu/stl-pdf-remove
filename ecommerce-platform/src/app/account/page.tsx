@@ -4,8 +4,8 @@ import Link from 'next/link';
 import { logoutUser } from '@/app/actions';
 import ProfileForm from './ProfileForm';
 
-export default function AccountPage() {
-    const cookieStore = cookies();
+export default async function AccountPage() {
+    const cookieStore = await cookies();
     const sessionConfig = cookieStore.get('user_session');
 
     if (!sessionConfig?.value) {

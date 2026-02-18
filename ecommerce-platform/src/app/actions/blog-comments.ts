@@ -5,7 +5,7 @@ import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 
 export async function submitBlogComment(formData: FormData) {
-    const session = cookies().get('user_session')?.value;
+    const session = (await cookies()).get('user_session')?.value;
     if (!session) {
         return { error: 'Yorum yapmak için giriş yapmalısınız.' };
     }
@@ -93,7 +93,7 @@ export async function getAllBlogComments() {
 }
 
 export async function deleteBlogComment(commentId: string) {
-    const session = cookies().get('user_session')?.value;
+    const session = (await cookies()).get('user_session')?.value;
     if (!session) {
         return { error: 'Yetkisiz işlem.' };
     }
@@ -114,7 +114,7 @@ export async function deleteBlogComment(commentId: string) {
 }
 
 export async function replyToCommentAsAdmin(parentId: string, content: string, postId: string) {
-    const session = cookies().get('user_session')?.value;
+    const session = (await cookies()).get('user_session')?.value;
     if (!session) return { error: 'Yetkisiz işlem.' };
     const user = JSON.parse(session);
 

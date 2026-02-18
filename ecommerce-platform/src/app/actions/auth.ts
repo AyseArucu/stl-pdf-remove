@@ -5,7 +5,8 @@ import { cookies } from 'next/headers';
 import { prisma } from '@/lib/prisma';
 
 export async function checkUserSession() {
-    const session = cookies().get('user_session')?.value;
+    const cookieStore = await cookies();
+    const session = cookieStore.get('user_session')?.value;
     if (!session) return null;
     try {
         const user = JSON.parse(session);

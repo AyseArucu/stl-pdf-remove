@@ -11,7 +11,7 @@ interface PageProps {
 }
 
 export default async function EditCategoryPage({ params }: PageProps) {
-    const session = cookies().get('user_session');
+    const session = (await cookies()).get('user_session');
     if (!session) {
         redirect('/erashu/admin/login');
     }

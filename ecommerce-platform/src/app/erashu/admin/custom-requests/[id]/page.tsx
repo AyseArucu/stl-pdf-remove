@@ -5,7 +5,7 @@ import { cookies } from 'next/headers';
 import Link from 'next/link';
 
 export default async function RequestDetailPage({ params }: { params: { id: string } }) {
-    const session = cookies().get('user_session');
+    const session = (await cookies()).get('user_session');
     if (!session) {
         redirect('/erashu/admin/login');
     }

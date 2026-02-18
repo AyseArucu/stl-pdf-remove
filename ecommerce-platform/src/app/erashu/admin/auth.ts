@@ -39,7 +39,7 @@ export async function login(formData: FormData) {
                 };
 
                 const callbackUrl = formData.get('callbackUrl') as string;
-                cookies().set('user_session', JSON.stringify(userSession), { httpOnly: true, path: '/' });
+                (await cookies()).set('user_session', JSON.stringify(userSession), { httpOnly: true, path: '/' });
                 console.log('Admin session created successfully');
 
                 const target = (callbackUrl && callbackUrl.startsWith('/')) ? callbackUrl : '/erashu/admin';
@@ -63,6 +63,6 @@ export async function login(formData: FormData) {
 }
 
 export async function logout() {
-    cookies().delete('user_session');
+    (await cookies()).delete('user_session');
     redirect('/erashu/admin/login');
 }

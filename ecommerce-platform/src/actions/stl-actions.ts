@@ -29,7 +29,7 @@ export async function incrementStlDownload(id: string) {
 
 export async function toggleStlFavorite(stlModelId: string) {
     try {
-        const cookieStore = cookies();
+        const cookieStore = await cookies();
         const session = cookieStore.get('user_session');
 
         if (!session) {

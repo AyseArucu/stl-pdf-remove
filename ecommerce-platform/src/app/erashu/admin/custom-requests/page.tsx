@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 
 export default async function CustomRequestsPage() {
-    const session = cookies().get('user_session');
+    const session = (await cookies()).get('user_session');
     if (!session) {
         redirect('/erashu/admin/login');
     }

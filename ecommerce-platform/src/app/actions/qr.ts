@@ -37,7 +37,7 @@ export async function createQrCode(payload: any) {
 
     // Try to get userId from session if not provided
     if (!userId) {
-        const cookieStore = cookies();
+        const cookieStore = await cookies();
         const userSession = cookieStore.get('user_session')?.value;
         if (userSession) {
             try {
@@ -105,7 +105,7 @@ export async function verifyQrPassword(id: string, password: string) {
             });
 
             // Set cookie for access
-            cookies().set(`qr_access_${id}`, 'true', {
+            (await cookies()).set(`qr_access_${id}`, 'true', {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
                 maxAge: 60 * 60 * 24, // 1 day

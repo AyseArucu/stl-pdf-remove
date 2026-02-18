@@ -13,7 +13,7 @@ export default async function StlModelsPage() {
     const models = await getStlModels();
 
     // Check admin role
-    const session = cookies().get('user_session')?.value;
+    const session = (await cookies()).get('user_session')?.value;
     let isAdmin = false;
     if (session) {
         const user = JSON.parse(session);

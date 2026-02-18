@@ -7,7 +7,7 @@ import ProductStatusToggle from '@/components/admin/ProductStatusToggle';
 import AdminSearch from '@/components/admin/AdminSearch';
 
 export default async function AdminProductsPage({ searchParams }: { searchParams: { q?: string } }) {
-    const session = cookies().get('user_session');
+    const session = (await cookies()).get('user_session');
     if (!session) {
         redirect('/erashu/admin/login');
     }

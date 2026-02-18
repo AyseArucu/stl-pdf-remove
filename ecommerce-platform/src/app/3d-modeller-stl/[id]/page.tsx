@@ -58,7 +58,7 @@ export default async function StlDetailPage({ params }: { params: { id: string }
     };
 
     // Check if user has favorited
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const session = cookieStore.get('user_session');
     let isFavorited = false;
 

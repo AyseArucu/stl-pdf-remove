@@ -27,7 +27,8 @@ export async function changeAdminPassword(formData: FormData) {
     // Real DB Update
     try {
         const { prisma } = await import('@/lib/prisma');
-        const userSession = JSON.parse(cookies().get('user_session')?.value || '{}');
+        const cookieStore = await cookies();
+        const userSession = JSON.parse(cookieStore.get('user_session')?.value || '{}');
 
         if (!userSession.email) {
             return { error: 'Oturum bulunamadı.' };
@@ -63,7 +64,7 @@ export async function changeAdminPassword(formData: FormData) {
 
 export async function logoutAllDevices() {
     // Clear the session cookie
-    cookies().delete('user_session');
+    (await cookies()).delete('user_session');
 
     // In a real app, you would also invalidate sessions in the DB
 

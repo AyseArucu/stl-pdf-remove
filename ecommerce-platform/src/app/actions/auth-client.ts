@@ -20,7 +20,7 @@ export async function loginUserClient(formData: FormData) {
 
         if (user) {
             // Set Cookie
-            cookies().set('user_session', JSON.stringify(user), {
+            (await cookies()).set('user_session', JSON.stringify(user), {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
                 maxAge: 60 * 60 * 24 * 7,
