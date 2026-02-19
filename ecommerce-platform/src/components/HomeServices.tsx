@@ -265,19 +265,19 @@ export default function HomeServices() {
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2">
                     {QR_TYPES.map((type) => (
                         <div key={type.id} className="relative group">
                             {type.active ? (
                                 <Link href={type.href} className="block h-full">
-                                    <div className={`h-full p-6 rounded-2xl bg-white border-2 ${type.border} shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 group-hover:border-opacity-100 flex flex-col items-center text-center`}>
-                                        <div className={`w-16 h-16 rounded-xl ${type.bg} ${type.color} flex items-center justify-center mb-4 transition-transform group-hover:scale-110`}>
-                                            {type.icon}
+                                    <div className={`h-full p-3 rounded-2xl bg-white border-2 ${type.border} shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 group-hover:border-opacity-100 flex flex-col items-center text-center`}>
+                                        <div className={`w-10 h-10 rounded-xl ${type.bg} ${type.color} flex items-center justify-center mb-2 transition-transform group-hover:scale-110`}>
+                                            {React.cloneElement(type.icon as React.ReactElement<any>, { size: 20 })}
                                         </div>
-                                        <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                                        <h3 className="text-sm font-bold text-gray-900 mb-1 group-hover:text-blue-600 transition-colors leading-tight">
                                             {type.label}
                                         </h3>
-                                        <p className="text-gray-500 text-sm">
+                                        <p className="text-gray-500 text-xs line-clamp-2">
                                             {type.description}
                                         </p>
                                         <div className="mt-4 flex items-center text-sm font-medium text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -286,14 +286,14 @@ export default function HomeServices() {
                                     </div>
                                 </Link>
                             ) : (
-                                <div className="h-full p-6 rounded-2xl bg-white border border-gray-100 shadow-sm opacity-60 cursor-not-allowed flex flex-col items-center text-center">
-                                    <div className="w-16 h-16 rounded-xl bg-gray-50 text-gray-400 flex items-center justify-center mb-4">
-                                        {type.icon}
+                                <div className="h-full p-3 rounded-2xl bg-white border border-gray-100 shadow-sm opacity-60 cursor-not-allowed flex flex-col items-center text-center">
+                                    <div className="w-10 h-10 rounded-xl bg-gray-50 text-gray-400 flex items-center justify-center mb-2">
+                                        {React.cloneElement(type.icon as React.ReactElement<any>, { size: 20 })}
                                     </div>
-                                    <h3 className="text-xl font-bold text-gray-400 mb-2">
+                                    <h3 className="text-sm font-bold text-gray-400 mb-1">
                                         {type.label}
                                     </h3>
-                                    <p className="text-gray-400 text-sm">
+                                    <p className="text-gray-400 text-xs line-clamp-2">
                                         {type.description}
                                     </p>
                                     <div className="mt-4 flex items-center text-xs font-bold text-orange-500 bg-orange-50 py-1 px-3 rounded-full w-max">

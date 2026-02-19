@@ -73,7 +73,7 @@ export default async function StlDetailPage({ params }: { params: Promise<{ id: 
                     where: {
                         userId_stlModelId: {
                             userId: user.id,
-                            stlModelId: params.id
+                            stlModelId: id
                         }
                     }
                 });

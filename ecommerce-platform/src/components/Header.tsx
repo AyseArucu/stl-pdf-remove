@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { FaBars, FaTimes } from 'react-icons/fa';
+import { FaBars, FaTimes, FaEllipsisV } from 'react-icons/fa';
 import { useCart } from './CartContext';
 import { useFavorites } from '@/context/FavoritesContext';
 import { searchProducts } from '@/app/actions';
@@ -117,12 +117,20 @@ export default function Header({ user }: { user: User }) {
     return (
         <header className="sticky-header">
             <div className="container">
-                {/* Logo Section */}
-                <Link href="/" className="site-logo" onClick={closeMenu}>
-                    ERASHU & GAMİNG
-                </Link>
+                <div className="logo-section">
+                    <Link href="/" className="site-logo" onClick={closeMenu}>
+                        ERASHU & GAMİNG
+                    </Link>
+                    <button
+                        className="menu-dot-btn"
+                        onClick={toggleMenu}
+                        aria-label="Toggle Menu"
+                    >
+                        <FaEllipsisV />
+                    </button>
+                </div>
 
-                {/* Navigation Menu */}
+                {/* Navigation Menu - Vertical Dropdown */}
                 <nav className={`nav-wrapper ${isMobileMenuOpen ? 'active' : ''}`}>
                     <ul className="nav-menu">
                         {navLinks.map((link) => (
@@ -163,14 +171,6 @@ export default function Header({ user }: { user: User }) {
 
 
 
-                    {/* Mobile Menu Button */}
-                    <button
-                        className="menu-btn"
-                        onClick={toggleMenu}
-                        aria-label="Toggle Menu"
-                    >
-                        {isMobileMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
-                    </button>
                 </div>
             </div>
         </header >

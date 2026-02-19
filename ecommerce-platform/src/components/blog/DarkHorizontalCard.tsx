@@ -23,7 +23,7 @@ export default function DarkHorizontalCard({ post, categoryTitle = "Teknoloji Ha
             <div className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row min-h-[300px] border border-gray-200 relative transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
 
                 {/* Image Side (Left) */}
-                <div className="relative w-full md:w-5/12 h-64 md:h-auto group overflow-hidden">
+                <div className="relative w-full md:w-5/12 h-48 md:h-auto group overflow-hidden">
                     <Link href={`/blog/${post.slug}`} className="block w-full h-full">
                         <img
                             src={post.coverImage}
@@ -34,7 +34,7 @@ export default function DarkHorizontalCard({ post, categoryTitle = "Teknoloji Ha
 
                         {/* Category Badge - Bottom Right of Image */}
                         <div className="absolute bottom-4 right-4 z-10">
-                            <span className={`px-3 py-1.5 rounded-md text-xs font-bold uppercase tracking-wide shadow-lg ${getCategoryColor(post.category)}`}>
+                            <span className={`px-2 py-1 rounded-md text-[10px] md:text-xs font-bold uppercase tracking-wide shadow-lg ${getCategoryColor(post.category)}`}>
                                 {post.category}
                             </span>
                         </div>
@@ -42,7 +42,7 @@ export default function DarkHorizontalCard({ post, categoryTitle = "Teknoloji Ha
                 </div>
 
                 {/* Content Side (Right) */}
-                <div className="w-full md:w-7/12 p-6 md:p-8 flex flex-col justify-center">
+                <div className="w-full md:w-7/12 p-5 md:p-8 flex flex-col justify-center">
 
                     <div className="mb-2">
                         <span className="text-blue-500 text-sm font-bold uppercase tracking-wider">
@@ -51,7 +51,7 @@ export default function DarkHorizontalCard({ post, categoryTitle = "Teknoloji Ha
                     </div>
 
                     <Link href={`/blog/${post.slug}`} className="group">
-                        <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 leading-tight group-hover:text-blue-600 transition-colors">
+                        <h3 className="text-xl md:text-3xl font-bold text-gray-900 mb-2 md:mb-4 leading-tight group-hover:text-blue-600 transition-colors">
                             {post.title}
                         </h3>
                     </Link>

@@ -56,18 +56,18 @@ const SERVICE_CARDS = [
 
 export default function ServiceCardsGrid() {
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
             {SERVICE_CARDS.map((type) => (
                 <div key={type.id} className="relative group">
                     <Link href={type.href} className="block h-full">
-                        <div className={`h-full p-6 rounded-2xl bg-white border-2 ${type.border} shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 group-hover:border-opacity-100`}>
-                            <div className={`w-16 h-16 rounded-xl ${type.bg} ${type.color} flex items-center justify-center mb-4 transition-transform group-hover:scale-110`}>
-                                {type.icon}
+                        <div className={`h-full p-4 md:p-6 rounded-2xl bg-white border-2 ${type.border} shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 group-hover:border-opacity-100 flex flex-col items-center text-center md:items-start md:text-left`}>
+                            <div className={`w-10 h-10 md:w-16 md:h-16 rounded-xl ${type.bg} ${type.color} flex items-center justify-center mb-2 md:mb-4 transition-transform group-hover:scale-110`}>
+                                {React.cloneElement(type.icon as React.ReactElement<any>, { size: 24 })}
                             </div>
-                            <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                            <h3 className="text-sm md:text-xl font-bold text-gray-900 mb-1 md:mb-2 group-hover:text-blue-600 transition-colors">
                                 {type.label}
                             </h3>
-                            <p className="text-gray-500">
+                            <p className="text-gray-500 text-xs md:text-base line-clamp-2">
                                 {type.description}
                             </p>
                             <div className="mt-4 flex items-center text-sm font-medium text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">

@@ -35,9 +35,9 @@ export default function FeaturedCategorySection({ title, posts, adLocation }: Fe
                 </div>
             )}
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
                 {/* Main Large Post (Left - Spans 2 Cols) */}
-                <div className="lg:col-span-2 group relative h-[400px] lg:h-[500px] rounded-2xl overflow-hidden shadow-lg">
+                <div className="col-span-2 group relative h-[250px] md:h-[400px] lg:h-[500px] rounded-2xl overflow-hidden shadow-lg">
                     <Link href={`/blog/${mainPost.slug}`} className="block h-full w-full">
                         <img
                             src={mainPost.coverImage}
@@ -49,10 +49,10 @@ export default function FeaturedCategorySection({ title, posts, adLocation }: Fe
 
                         {/* Content */}
                         <div className="absolute bottom-0 left-0 p-8 w-full">
-                            <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-3 inline-block shadow-md ${getCategoryColor(mainPost.category)}`}>
+                            <span className={`px-2 py-0.5 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-wider mb-2 inline-block shadow-md ${getCategoryColor(mainPost.category)}`}>
                                 {mainPost.category}
                             </span>
-                            <h2 className="text-2xl lg:text-4xl font-bold text-white mb-3 leading-tight group-hover:text-blue-300 transition-colors">
+                            <h2 className="text-lg md:text-2xl lg:text-4xl font-bold text-white mb-2 leading-tight group-hover:text-blue-300 transition-colors">
                                 {mainPost.title}
                             </h2>
                             <div className="flex items-center gap-4 text-gray-200 text-sm">
@@ -66,7 +66,7 @@ export default function FeaturedCategorySection({ title, posts, adLocation }: Fe
                 </div>
 
                 {/* Sub Featured Posts (Right - Stacked) */}
-                <div className="flex flex-col gap-6 h-[500px]">
+                <div className="col-span-2 lg:col-span-1 flex flex-row lg:flex-col gap-3 md:gap-6 h-auto lg:h-[500px]">
                     {subPosts.map((post) => (
                         <div key={post.id} className="group relative flex-1 rounded-2xl overflow-hidden shadow-lg">
                             <Link href={`/blog/${post.slug}`} className="block h-full w-full">

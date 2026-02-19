@@ -42,7 +42,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             </div>
 
             {/* Hero Header */}
-            <div className="relative h-[400px] w-full bg-gray-900">
+            <div className="relative h-[300px] md:h-[400px] w-full bg-gray-900">
                 <div className="absolute inset-0 opacity-60">
                     <img
                         src={post.coverImage}
@@ -67,7 +67,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                         {post.category}
                     </span>
 
-                    <h1 className="text-3xl md:text-5xl font-bold text-white mb-4 leading-tight max-w-4xl">
+                    <h1 className="text-2xl md:text-5xl font-bold text-white mb-4 leading-tight max-w-4xl">
                         {post.title}
                     </h1>
 
@@ -127,8 +127,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
                         {/* Article Content */}
                         <AdSpace location="BLOG_DETAIL_TOP" className="mb-8" />
-                        <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
-                            <div className="prose prose-lg max-w-none text-gray-700 leading-relaxed">
+                        <div className="bg-white rounded-2xl p-4 md:p-8 shadow-sm border border-gray-100">
+                            <div className="prose prose-base md:prose-lg max-w-none text-gray-700 leading-relaxed">
                                 <div dangerouslySetInnerHTML={{ __html: post.content.replace(/\n/g, '<br/>') }} />
                             </div>
                         </div>

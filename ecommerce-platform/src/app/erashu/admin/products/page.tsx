@@ -29,7 +29,7 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
     // Build category lookup map for performance
     const categoryMap = new Map(categories.map(c => [c.id, c]));
 
-    const query = searchParams.q?.toLowerCase();
+    const query = q?.toLowerCase();
     const where: any = {};
     if (query) {
         where.name = { contains: query };

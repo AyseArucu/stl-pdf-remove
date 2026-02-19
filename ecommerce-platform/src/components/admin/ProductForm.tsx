@@ -74,9 +74,9 @@ export default function ProductForm({ categories, initialData, isEdit = false }:
 
                 setMediaItems(prev => [...prev, { type, url }]);
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error('Upload failed', error);
-            alert('Dosya yüklenirken hata oluştu');
+            alert(error.message || 'Dosya yüklenirken hata oluştu');
         } finally {
             setUploading(false);
         }

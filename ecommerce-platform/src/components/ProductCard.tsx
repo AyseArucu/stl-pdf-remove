@@ -91,14 +91,14 @@ export default function ProductCard({ product, categoryName }: ProductCardProps)
                     )}
                 </div>
 
-                <div className="product-info">
+                <div className="product-info items-center text-center">
                     <div className="product-header">
 
                         <span className="product-title" title={product.name}>{product.name}</span>
                     </div>
 
                     <div className="product-rating">
-                        <div className="stars">
+                        <div className="stars justify-center">
                             {[1, 2, 3, 4, 5].map((star) => (
                                 <svg key={star} className={`star ${star <= Math.round(rating) ? 'filled' : ''}`} width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
@@ -112,7 +112,7 @@ export default function ProductCard({ product, categoryName }: ProductCardProps)
                         {product.favoriteCount ? `${product.favoriteCount} kişi favoriledi` : ''}
                     </div>
 
-                    <div className="product-price-box">
+                    <div className="product-price-box justify-center">
                         {product.salePrice && product.salePrice < product.price ? (
                             <>
                                 <div className="product-price old-price">
@@ -128,7 +128,7 @@ export default function ProductCard({ product, categoryName }: ProductCardProps)
                     </div>
 
                     {/* Add to cart - Centered and Horizontal */}
-                    <div className="add-to-cart-container">
+                    <div className="add-to-cart-container w-full flex justify-center mt-auto">
                         <AddToCartButton product={product} />
                     </div>
                 </div>

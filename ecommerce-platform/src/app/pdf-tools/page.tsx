@@ -1,12 +1,7 @@
-import nextDynamic from "next/dynamic";
+import PdfToolsLoader from "./PdfToolsLoader";
 
 export const dynamic = "force-dynamic";
 
-const PdfToolsWrapper = nextDynamic(
-    () => import("./PdfToolsWrapper"),
-    { ssr: false }
-);
-
 export default function Page() {
-    return <PdfToolsWrapper />;
+    return <PdfToolsLoader />;
 }

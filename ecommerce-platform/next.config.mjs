@@ -1,7 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    serverExternalPackages: ['canvas', 'jsdom', 'pdfjs-dist'],
+    images: {
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: '**',
+            },
+        ],
+    },
     experimental: {
-        serverComponentsExternalPackages: ['@imgly/background-removal', 'onnxruntime-web'],
         serverActions: {
             bodySizeLimit: '10mb',
         },

@@ -617,6 +617,11 @@ export async function uploadFile(formData: FormData) {
         throw new Error('Dosya seçilmedi');
     }
 
+    if (!process.env.BLOB_READ_WRITE_TOKEN) {
+        console.error('BLOB_READ_WRITE_TOKEN is missing');
+        throw new Error('Sunucu yapılandırma hatası: Blob Token eksik');
+    }
+
     try {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
         const filename = file.name.replace(/\s+/g, '-').toLowerCase();
@@ -630,7 +635,7 @@ export async function uploadFile(formData: FormData) {
         return blob.url;
     } catch (e) {
         console.error('Upload file error', e);
-        throw new Error('Dosya yüklenemedi');
+        throw new Error('Dosya yüklenemedi: ' + (e as Error).message);
     }
 }
 
