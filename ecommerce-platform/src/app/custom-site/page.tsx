@@ -28,7 +28,7 @@ export default async function CustomSitePage() {
 
             {/* Hero Section */}
             <section className="relative bg-[var(--primary)] text-white pt-32 pb-24 overflow-hidden">
-                <div className="container mx-auto px-6 relative z-10 text-center">
+                <div className="container mx-auto px-4 md:px-6">
                     <span className="inline-block py-1 px-3 rounded-full bg-[var(--secondary)] text-white text-sm font-semibold mb-6 border border-white/20">
                         ✨ Kişiye Özel Hizmet
                     </span>
@@ -41,7 +41,7 @@ export default async function CustomSitePage() {
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <Link
                             href="/custom-site/quote"
-                            className="px-8 py-4 bg-[var(--secondary)] hover:bg-[var(--accent)] text-white rounded-lg font-bold text-lg transition-all shadow-lg"
+                            className="px-8 py-4 bg-[var(--secondary)] hover:bg-[var(--accent)] text-white rounded-lg font-bold text-lg transition-all shadow-lg flex items-center justify-center text-center"
                         >
                             Ücretsiz Teklif Al
                         </Link>
@@ -61,19 +61,19 @@ export default async function CustomSitePage() {
 
             {/* Benefits Section */}
             <section className="py-20 bg-[var(--background)]">
-                <div className="container mx-auto px-6">
+                <div className="container mx-auto px-4 md:px-6">
                     <div className="text-center mb-16">
                         <h2 className="text-3xl font-bold text-[var(--text)]">Hizmet Ayrıcalıkları</h2>
                         <div className="w-16 h-1 bg-[var(--secondary)] mx-auto mt-4 rounded-full"></div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         {content.benefits.map((benefit: string, idx: number) => (
-                            <div key={idx} className="bg-[var(--surface)] p-8 rounded-xl shadow-sm border border-[var(--border)] hover:shadow-md transition-shadow flex items-start gap-4">
-                                <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center shrink-0 text-[var(--secondary)]">
+                            <div key={idx} className="bg-[var(--surface)] p-8 rounded-xl shadow-sm border border-[var(--border)] hover:shadow-md transition-shadow flex flex-col items-center text-center gap-4">
+                                <div className="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center shrink-0 text-[var(--secondary)] text-2xl">
                                     <FaCheck />
                                 </div>
                                 <div>
-                                    <h3 className="font-bold text-lg text-[var(--text)] mb-1">{benefit}</h3>
+                                    <h3 className="font-bold text-lg text-[var(--text)] mb-2">{benefit}</h3>
                                     <p className="text-sm text-[var(--text-light)]">Profesyonel standartlarda çözüm.</p>
                                 </div>
                             </div>
@@ -84,7 +84,7 @@ export default async function CustomSitePage() {
 
             {/* Why Us / Trust Section */}
             <section className="py-20 bg-[var(--surface)]">
-                <div className="container mx-auto px-6 flex flex-col md:flex-row items-center gap-12">
+                <div className="container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center gap-12">
                     <div className="md:w-1/2">
                         <h2 className="text-3xl font-bold text-[var(--text)] mb-6">Neden Bizi Tercih Etmelisiniz?</h2>
                         <p className="text-[var(--text-light)] text-lg leading-relaxed mb-8">
@@ -110,7 +110,7 @@ export default async function CustomSitePage() {
 
             {/* Process Section */}
             <section className="py-20 bg-[var(--background)]">
-                <div className="container mx-auto px-6">
+                <div className="container mx-auto px-4 md:px-6">
                     <div className="text-center mb-16">
                         <h2 className="text-3xl font-bold text-[var(--text)]">Çalışma Sürecimiz</h2>
                         <p className="text-[var(--text-light)] mt-4">Adım adım projenizi hayata geçiriyoruz.</p>
@@ -127,7 +127,7 @@ export default async function CustomSitePage() {
 
             {/* Packages Section */}
             <section className="py-20 bg-[var(--surface)]">
-                <div className="container mx-auto px-6">
+                <div className="container mx-auto px-4 md:px-6">
                     <div className="text-center mb-16">
                         <h2 className="text-3xl font-bold text-[var(--text)]">Paketler ve Çözümler</h2>
                         <p className="text-[var(--text-light)] mt-4">İhtiyacınıza uygun paketi seçip teklif alabilirsiniz.</p>
@@ -159,7 +159,7 @@ export default async function CustomSitePage() {
 
             {/* FAQ Section */}
             <section className="py-20 bg-[var(--background)]">
-                <div className="container mx-auto px-6 max-w-3xl">
+                <div className="container mx-auto px-4 md:px-6 max-w-3xl">
                     <div className="text-center mb-12">
                         <h2 className="text-3xl font-bold text-[var(--text)]">Sıkça Sorulan Sorular</h2>
                     </div>

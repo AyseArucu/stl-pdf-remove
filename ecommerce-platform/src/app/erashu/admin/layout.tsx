@@ -1,8 +1,7 @@
 import { cookies } from 'next/headers';
-import AdminSidebar from '@/components/admin/AdminSidebar';
-import AdminHeader from '@/components/admin/AdminHeader';
-import { AdminProvider } from '@/context/AdminContext';
-import AdminGuard from '@/components/admin/AdminGuard';
+import AdminLayoutClient from '@/components/admin/AdminLayoutClient';
+// import { AdminProvider } from '@/context/AdminContext'; // Moved to Client
+// import AdminGuard from '@/components/admin/AdminGuard'; // Moved to Client
 
 export default async function AdminLayout({
     children,
@@ -31,23 +30,9 @@ export default async function AdminLayout({
     }
 
     return (
-        <AdminProvider initialPermissions={permissions}>
-            <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'var(--background)' }}>
-                {/* Sidebar (Fixed Width) - Only show if Admin */}
-                {isAdmin && <AdminSidebar />}
-
-                {/* Main Content Area */}
-                <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-                    <AdminHeader />
-
-                    {/* Page Content */}
-                    <main style={{ padding: '2rem', flex: 1, overflowY: 'auto' }}>
-                        <AdminGuard>
-                            {children}
-                        </AdminGuard>
-                    </main>
-                </div>
-            </div>
-        </AdminProvider>
+        <AdminLayoutClient isAdmin={isAdmin} permissions={permissions}>
+            {children}
+        </AdminLayoutClient>
     );
 }
+

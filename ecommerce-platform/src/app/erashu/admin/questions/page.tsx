@@ -25,7 +25,7 @@ export default async function AdminQuestionsPage({ searchParams }: { searchParam
     return (
         <div style={{ padding: '2rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-                <h1 style={{ fontSize: '1.8rem', fontWeight: 'bold' }}>Soru & Cevap Yönetimi</h1>
+                <h1 style={{ fontSize: '1.25rem', fontWeight: 'bold' }}>Soru & Cevap Yönetimi</h1>
                 <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                     <AdminSearch placeholder="Soru, ürün veya kullanıcı ara..." />
                     <Link href="/erashu/admin" className="btn" style={{ backgroundColor: '#6cbd7e' }}>&larr; Panele Dön</Link>

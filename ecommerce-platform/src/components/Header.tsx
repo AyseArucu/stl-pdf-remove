@@ -121,14 +121,9 @@ export default function Header({ user }: { user: User }) {
                     <Link href="/" className="site-logo" onClick={closeMenu}>
                         ERASHU & GAMİNG
                     </Link>
-                    <button
-                        className="menu-dot-btn"
-                        onClick={toggleMenu}
-                        aria-label="Toggle Menu"
-                    >
-                        <FaEllipsisV />
-                    </button>
                 </div>
+
+
 
                 {/* Navigation Menu - Vertical Dropdown */}
                 <nav className={`nav-wrapper ${isMobileMenuOpen ? 'active' : ''}`}>
@@ -171,8 +166,18 @@ export default function Header({ user }: { user: User }) {
 
 
 
+                    {/* 3-Dot Menu Button (Mobile Only) */}
+                    <button
+                        className="menu-dot-btn"
+                        onClick={toggleMenu}
+                        aria-label="Toggle Menu"
+                    >
+                        <FaEllipsisV />
+                    </button>
                 </div>
             </div>
+
+
         </header >
     );
 }

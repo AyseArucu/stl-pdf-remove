@@ -44,24 +44,18 @@ export default async function CategoriesPage({ searchParams }: { searchParams: P
                 </div>
             </header>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem' }}>
+            <div className="grid lg:grid-cols-2 gap-8">
                 {/* Kategori Ekleme Formu */}
-                <div style={{
-                    backgroundColor: 'white',
-                    padding: '2rem',
-                    borderRadius: '12px',
-                    border: '1px solid var(--border)',
-                    height: 'fit-content'
-                }}>
-                    <h2 style={{ marginBottom: '1.5rem', fontSize: '1.5rem' }}>Yeni Kategori Ekle</h2>
-                    <form action={createCategory} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <div className="bg-white p-6 rounded-xl border border-gray-200 h-fit">
+                    <h2 className="text-xl font-semibold mb-6 text-gray-800">Yeni Kategori Ekle</h2>
+                    <form action={createCategory} className="space-y-4">
                         <div>
-                            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem' }}>Kategori Adı</label>
-                            <input name="name" type="text" required placeholder="Örn: Ayakkabı" style={{ width: '100%', padding: '0.75rem', borderRadius: '6px', border: '1px solid var(--border)' }} />
+                            <label className="block mb-2 text-sm font-medium text-gray-700">Kategori Adı</label>
+                            <input name="name" type="text" required placeholder="Örn: Ayakkabı" className="w-full p-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-purple-500 outline-none" />
                         </div>
                         <div>
-                            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem' }}>Ana Kategori (Opsiyonel)</label>
-                            <select name="parentId" style={{ width: '100%', padding: '0.75rem', borderRadius: '6px', border: '1px solid var(--border)', backgroundColor: 'white' }}>
+                            <label className="block mb-2 text-sm font-medium text-gray-700">Ana Kategori (Opsiyonel)</label>
+                            <select name="parentId" className="w-full p-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-purple-500 outline-none bg-white">
                                 <option value="">Yok (Ana Kategori)</option>
                                 {/* Use allCategories here to always show all potential parents for the form, regardless of search */}
                                 {allCategories.filter(c => !c.parentId).map(c => (
@@ -69,7 +63,7 @@ export default async function CategoriesPage({ searchParams }: { searchParams: P
                                 ))}
                             </select>
                         </div>
-                        <button type="submit" className="btn" style={{ width: '100%' }}>
+                        <button type="submit" className="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-medium transition-colors">
                             Kategori Oluştur
                         </button>
                     </form>
@@ -77,46 +71,31 @@ export default async function CategoriesPage({ searchParams }: { searchParams: P
 
                 {/* Kategori Listesi */}
                 <div>
-                    <h2 style={{ marginBottom: '1.5rem', fontSize: '1.5rem' }}>Mevcut Kategoriler</h2>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    <h2 className="text-xl font-semibold mb-6 text-gray-800">Mevcut Kategoriler</h2>
+                    <div className="space-y-4">
                         {mainCategories.map((category) => {
                             const children = subCategories.filter(sc => sc.parentId === category.id);
                             return (
-                                <div key={category.id} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                <div key={category.id} className="space-y-2">
                                     {/* Main Category Item */}
-                                    <div style={{
-                                        display: 'flex',
-                                        justifyContent: 'space-between',
-                                        alignItems: 'center',
-                                        backgroundColor: 'white',
-                                        padding: '1rem',
-                                        borderRadius: '8px',
-                                        border: '1px solid var(--border)'
-                                    }}>
-                                        <span style={{ fontWeight: 600 }}>{category.name}</span>
-                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                    <div className="flex justify-between items-center bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                                        <span className="font-semibold text-gray-800">{category.name}</span>
+                                        <div className="flex gap-2">
                                             <Link href={`/erashu/admin/categories/${category.id}/edit`}
-                                                style={{
-                                                    textDecoration: 'none',
-                                                    padding: '0.5rem 1rem',
-                                                    borderRadius: '6px',
-                                                    border: '1px solid var(--border)',
-                                                    color: 'var(--text)',
-                                                    fontSize: '0.9rem'
-                                                }}>
+                                                className="px-3 py-1.5 text-sm text-blue-600 border border-blue-100 bg-blue-50 rounded-lg hover:bg-blue-100 transition"
+                                            >
                                                 Düzenle
                                             </Link>
                                             <form action={deleteCategory}>
                                                 <input type="hidden" name="id" value={category.id} />
-                                                <button type="submit" style={{
-                                                    backgroundColor: '#ef4444',
-                                                    color: 'white',
-                                                    border: 'none',
-                                                    padding: '0.5rem 1rem',
-                                                    borderRadius: '6px',
-                                                    cursor: 'pointer',
-                                                    fontSize: '0.9rem'
-                                                }}>
+                                                <button type="submit"
+                                                    className="px-3 py-1.5 text-sm text-red-600 border border-red-100 bg-red-50 rounded-lg hover:bg-red-100 transition"
+                                                    onClick={(e) => {
+                                                        if (!confirm('Silmek istediğinize emin misiniz?')) {
+                                                            e.preventDefault();
+                                                        }
+                                                    }}
+                                                >
                                                     Sil
                                                 </button>
                                             </form>
@@ -125,41 +104,23 @@ export default async function CategoriesPage({ searchParams }: { searchParams: P
 
                                     {/* Subcategories */}
                                     {children.length > 0 && (
-                                        <div style={{ paddingLeft: '2rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                        <div className="pl-6 space-y-2">
                                             {children.map(child => (
-                                                <div key={child.id} style={{
-                                                    display: 'flex',
-                                                    justifyContent: 'space-between',
-                                                    alignItems: 'center',
-                                                    backgroundColor: '#f8fafc',
-                                                    padding: '0.75rem',
-                                                    borderRadius: '8px',
-                                                    border: '1px solid var(--border)'
-                                                }}>
-                                                    <span style={{ fontSize: '0.9rem' }}>↳ {child.name}</span>
-                                                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                                <div key={child.id} className="flex justify-between items-center bg-gray-50 p-3 rounded-lg border border-gray-100">
+                                                    <span className="text-sm text-gray-600 flex items-center gap-2">
+                                                        <span className="text-gray-400">↳</span> {child.name}
+                                                    </span>
+                                                    <div className="flex gap-2">
                                                         <Link href={`/erashu/admin/categories/${child.id}/edit`}
-                                                            style={{
-                                                                textDecoration: 'none',
-                                                                padding: '0.25rem 0.5rem',
-                                                                borderRadius: '4px',
-                                                                border: '1px solid var(--border)',
-                                                                color: 'var(--text)',
-                                                                fontSize: '0.8rem'
-                                                            }}>
+                                                            className="p-1.5 text-xs text-blue-600 hover:bg-blue-50 rounded"
+                                                        >
                                                             Düzenle
                                                         </Link>
                                                         <form action={deleteCategory}>
                                                             <input type="hidden" name="id" value={child.id} />
-                                                            <button type="submit" style={{
-                                                                backgroundColor: '#ef4444',
-                                                                color: 'white',
-                                                                border: 'none',
-                                                                padding: '0.25rem 0.5rem',
-                                                                borderRadius: '4px',
-                                                                cursor: 'pointer',
-                                                                fontSize: '0.8rem'
-                                                            }}>
+                                                            <button type="submit"
+                                                                className="p-1.5 text-xs text-red-600 hover:bg-red-50 rounded"
+                                                            >
                                                                 Sil
                                                             </button>
                                                         </form>
@@ -172,7 +133,7 @@ export default async function CategoriesPage({ searchParams }: { searchParams: P
                             );
                         })}
                         {categories.length === 0 && (
-                            <p style={{ color: 'var(--text-light)', fontStyle: 'italic' }}>
+                            <p className="text-gray-500 italic p-4 text-center bg-gray-50 rounded-lg">
                                 {query ? 'Aradığınız kriterlere uygun kategori bulunamadı.' : 'Henüz hiç kategori yok.'}
                             </p>
                         )}

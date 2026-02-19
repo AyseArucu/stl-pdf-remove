@@ -39,81 +39,40 @@ export default async function AdminSliderPage() {
                 </div>
             </header>
 
-            <div style={{ backgroundColor: 'white', borderRadius: '12px', border: '1px solid var(--border)', overflow: 'hidden' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-                    <thead style={{ backgroundColor: '#f9fafb', borderBottom: '1px solid var(--border)' }}>
-                        <tr>
-                            <th style={{ padding: '1rem', fontWeight: 600 }}>Sıra</th>
-                            <th style={{ padding: '1rem', fontWeight: 600 }}>Ön Görsel</th>
-                            <th style={{ padding: '1rem', fontWeight: 600 }}>Arka Plan</th>
-                            <th style={{ padding: '1rem', fontWeight: 600 }}>Başlık</th>
-                            <th style={{ padding: '1rem', fontWeight: 600 }}>Alt Başlık</th>
-                            <th style={{ padding: '1rem', fontWeight: 600 }}>Buton</th>
-                            <th style={{ padding: '1rem', fontWeight: 600 }}>Link</th>
-                            <th style={{ padding: '1rem', fontWeight: 600 }}>Durum</th>
-                            <th style={{ padding: '1rem', fontWeight: 600 }}>İşlemler</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {slides.map((slide) => (
-                            <tr key={slide.id} style={{ borderBottom: '1px solid var(--border)' }}>
-                                <td style={{ padding: '1rem', fontWeight: 600 }}>{slide.order}</td>
-                                <td style={{ padding: '1rem' }}>
-                                    <div style={{ width: '80px', height: '40px', borderRadius: '4px', overflow: 'hidden', backgroundColor: '#f3f4f6' }}>
-                                        <img
-                                            src={slide.imageUrl}
-                                            alt={slide.title}
-                                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                        />
-                                    </div>
-                                </td>
-                                <td style={{ padding: '1rem' }}>
-                                    {slide.bgImageUrl ? (
-                                        <div style={{ width: '80px', height: '40px', borderRadius: '4px', overflow: 'hidden', backgroundColor: '#f3f4f6' }}>
-                                            <img
-                                                src={slide.bgImageUrl}
-                                                alt="Background"
-                                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                            />
-                                        </div>
-                                    ) : (
-                                        <span style={{ fontSize: '0.8rem', color: '#9ca3af italic' }}>Varsayılan</span>
-                                    )}
-                                </td>
-                                <td style={{ padding: '1rem', fontWeight: 500 }}>{slide.title}</td>
-                                <td style={{ padding: '1rem', color: 'var(--text-light)' }}>{slide.subtitle || '-'}</td>
-                                <td style={{ padding: '1rem' }}>{slide.buttonText}</td>
-                                <td style={{ padding: '1rem', fontSize: '0.9rem', color: 'blue' }}>{slide.buttonLink}</td>
-                                <td style={{ padding: '1rem' }}>
-                                    <span style={{
-                                        padding: '0.25rem 0.75rem',
-                                        borderRadius: '9999px',
-                                        fontSize: '0.75rem',
-                                        fontWeight: 600,
-                                        backgroundColor: slide.isActive ? '#ecfdf5' : '#fef2f2',
-                                        color: slide.isActive ? '#059669' : '#dc2626'
-                                    }}>
-                                        {slide.isActive ? 'Aktif' : 'Pasif'}
-                                    </span>
-                                </td>
-                                <td style={{ padding: '1rem' }}>
-                                    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                                        <Link href={`/erashu/admin/slider/${slide.id}`} style={{ color: 'var(--primary)', fontWeight: 500, textDecoration: 'none' }}>
-                                            Düzenle
-                                        </Link>
-                                    </div>
-                                </td>
-                            </tr>
-                        ))}
-                        {slides.length === 0 && (
-                            <tr>
-                                <td colSpan={7} style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-light)' }}>
-                                    <p>Henüz hiç slayt eklenmemiş.</p>
-                                </td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
+            <div className="space-y-4">
+                {slides.map((slide) => (
+                    <div key={slide.id} className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex flex-col md:flex-row items-center gap-4 md:gap-6">
+                        <div className="flex items-center gap-4 w-full md:w-auto">
+                            <span className="font-bold text-gray-400">#{slide.order}</span>
+                            <div className="w-24 h-14 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+                                <img src={slide.imageUrl} alt={slide.title} className="w-full h-full object-cover" />
+                            </div>
+                        </div>
+
+                        <div className="flex-1 text-center md:text-left w-full">
+                            <h3 className="font-semibold text-gray-900">{slide.title}</h3>
+                            <p className="text-sm text-gray-500">{slide.subtitle || '-'}</p>
+                        </div>
+
+                        <div className="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end border-t md:border-none pt-3 md:pt-0">
+                            <span className={`px-3 py-1 rounded-full text-xs font-semibold ${slide.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                                {slide.isActive ? 'Aktif' : 'Pasif'}
+                            </span>
+
+                            <div className="flex gap-2">
+                                <Link href={`/erashu/admin/slider/${slide.id}`} className="p-2 bg-blue-50 text-blue-600 rounded-lg text-sm font-medium">
+                                    Düzenle
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+
+                {slides.length === 0 && (
+                    <div className="p-8 text-center text-gray-500 bg-white rounded-xl border border-gray-200">
+                        Henüz hiç slayt eklenmemiş.
+                    </div>
+                )}
             </div>
         </main>
     );

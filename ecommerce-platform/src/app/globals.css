@@ -438,8 +438,14 @@ body {
   .site-logo {
     margin: 0;
     /* Remove massive margins */
-    font-size: 1.2rem;
-    /* Smaller logo */
+    margin-right: auto;
+    /* Push everything else to the right */
+    font-size: 0.9rem;
+    /* Reduced from 1rem to fit better */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    order: 0;
   }
 
   .main-content {
@@ -460,55 +466,61 @@ body {
     /* Take available space */
   }
 
-  .menu-dot-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.2rem;
-    cursor: pointer;
-    padding: 0.5rem;
-  }
-
   .nav-wrapper {
     position: absolute;
-    top: 100%;
+    top: 60px;
+    /* Reverted to 60px fixed top */
     left: 0;
-    width: 100%;
-    background-color: #2d0a31;
+    right: 0;
+    width: 100vw;
+    /* Reverted to 100vw */
+    background-color: rgba(45, 10, 49, 0.98);
+    /* Solid background for visibility */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     overflow: hidden;
     max-height: 0;
-    transition: max-height 0.3s ease-in-out;
-    z-index: 999;
+    transition: all 0.3s ease-in-out;
+    z-index: 10001;
+    /* Extremely high z-index */
     border-top: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   }
 
   .nav-wrapper.active {
-    max-height: 300px;
-    /* Expanded height */
+    max-height: 400px;
+    /* Limit height to be shorter, not full screen */
     overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    /* Add shadow for depth */
   }
 
   .nav-menu {
     display: flex;
     flex-direction: column;
     /* Vertical List */
-    padding: 1rem;
-    gap: 1rem;
-    align-items: flex-start;
-    /* Align left */
+    padding: 1.5rem 1rem;
+    /* Reduced padding */
+    gap: 0.75rem;
+    /* Reduced gap */
+    align-items: center;
+    /* remove justify-center and height to allow natural flow */
   }
 
   .nav-link {
     font-size: 0.9rem;
     text-transform: none;
-    /* Normal case */
     letter-spacing: normal;
-    padding: 0.5rem 0;
+    padding: 1rem 0;
+    /* More padding */
     width: 100%;
+    text-align: center;
+    color: white !important;
+    /* Force white text */
+    font-weight: 500;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    display: block;
+    /* Ensure block display */
   }
 
   .sticky-header .container {
@@ -529,9 +541,22 @@ body {
   }
 
   .header-actions {
-    order: 0;
-    /* Reset */
+    order: 2;
     gap: 0.5rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .menu-dot-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.5rem;
   }
 
   /* Hide old menu btn class if any */
@@ -603,15 +628,24 @@ body {
   }
 
   .header-actions {
-    gap: 0.75rem;
+    gap: 0.5rem;
     /* Reduce gap between icons */
     order: 2;
     /* Second (Right) */
   }
 
-  .login-btn {
-    padding: 0.3rem 0.6rem;
-    font-size: 0.75rem;
+  .login-btn,
+  .action-btn {
+    padding: 0.25rem 0.5rem;
+    /* Smaller padding */
+    font-size: 0.7rem;
+    /* Smaller text */
+    white-space: nowrap;
+  }
+
+  .user-menu .user-name {
+    display: none;
+    /* Hide user name on mobile, show only icon if space is tight */
   }
 }
 

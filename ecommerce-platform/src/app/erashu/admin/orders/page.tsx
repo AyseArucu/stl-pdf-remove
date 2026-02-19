@@ -141,8 +141,102 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
                 </div>
             </header>
 
-            {renderOrderTable(activeOrders, 'Aktif Siparişler', 'Bekleyen veya işlenen sipariş bulunmuyor.')}
-            {renderOrderTable(passiveOrders, 'Pasif Siparişler (Tamamlanan/İptal)', 'Tamamlanmış veya iptal edilmiş sipariş bulunmuyor.')}
+            {/* Active Orders */}
+            <div className="mb-12">
+                <h2 className="text-xl font-semibold mb-4 text-gray-800">Aktif Siparişler ({activeOrders.length})</h2>
+                <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-left border-collapse">
+                            <thead className="bg-gray-50 border-b border-gray-100">
+                                <tr>
+                                    <th className="p-3 md:p-4 text-xs md:text-sm font-semibold text-gray-600">Sipariş No</th>
+                                    <th className="p-3 md:p-4 text-xs md:text-sm font-semibold text-gray-600 hidden md:table-cell">Tarih</th>
+                                    <th className="p-3 md:p-4 text-xs md:text-sm font-semibold text-gray-600">Müşteri</th>
+                                    <th className="p-3 md:p-4 text-xs md:text-sm font-semibold text-gray-600 hidden lg:table-cell">Adres</th>
+                                    <th className="p-3 md:p-4 text-xs md:text-sm font-semibold text-gray-600 hidden md:table-cell">Ürünler</th>
+                                    <th className="p-3 md:p-4 text-xs md:text-sm font-semibold text-gray-600">Tutar</th>
+                                    <th className="p-3 md:p-4 text-xs md:text-sm font-semibold text-gray-600">Durum</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-gray-100">
+                                {activeOrders.map((order) => (
+                                    <tr key={order.id} className="hover:bg-gray-50 transition-colors">
+                                        <td className="p-3 md:p-4 font-semibold text-gray-900 text-xs md:text-sm">#{order.id.slice(0, 8)}</td>
+                                        <td className="p-3 md:p-4 text-xs md:text-sm hidden md:table-cell">
+                                            {formatRelativeTime(order.date)}
+                                        </td>
+                                        <td className="p-3 md:p-4">
+                                            <div className="font-medium text-xs md:text-sm">{order.customerName}</div>
+                                            <div className="text-xs text-gray-500">{order.customerEmail}</div>
+                                        </td>
+                                        <td className="p-3 md:p-4 text-xs text-gray-500 hidden lg:table-cell max-w-[200px] truncate">
+                                            {order.address}
+                                        </td>
+                                        <td className="p-3 md:p-4 text-xs hidden md:table-cell">
+                                            {order.items.length} ürün
+                                        </td>
+                                        <td className="p-3 md:p-4 font-bold text-gray-900 text-xs md:text-sm">{order.total} TL</td>
+                                        <td className="p-3 md:p-4">
+                                            <OrderStatusForm orderId={order.id} currentStatus={order.status} />
+                                        </td>
+                                    </tr>
+                                ))}
+                                {activeOrders.length === 0 && (
+                                    <tr>
+                                        <td colSpan={7} className="p-8 text-center text-gray-500">
+                                            Bekleyen veya işlenen sipariş bulunmuyor.
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            {/* Passive Orders */}
+            <div className="mb-12">
+                <h2 className="text-xl font-semibold mb-4 text-gray-800">Geçmiş Siparişler ({passiveOrders.length})</h2>
+                <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-left border-collapse">
+                            <thead className="bg-gray-50 border-b border-gray-100">
+                                <tr>
+                                    <th className="p-3 md:p-4 text-xs md:text-sm font-semibold text-gray-600">Sipariş No</th>
+                                    <th className="p-3 md:p-4 text-xs md:text-sm font-semibold text-gray-600 hidden md:table-cell">Tarih</th>
+                                    <th className="p-3 md:p-4 text-xs md:text-sm font-semibold text-gray-600">Müşteri</th>
+                                    <th className="p-3 md:p-4 text-xs md:text-sm font-semibold text-gray-600 hidden md:table-cell">Tutar</th>
+                                    <th className="p-3 md:p-4 text-xs md:text-sm font-semibold text-gray-600">Durum</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-gray-100">
+                                {passiveOrders.map((order) => (
+                                    <tr key={order.id} className="hover:bg-gray-50 transition-colors">
+                                        <td className="p-3 md:p-4 font-semibold text-gray-900 text-xs md:text-sm">#{order.id.slice(0, 8)}</td>
+                                        <td className="p-3 md:p-4 text-xs md:text-sm text-gray-500 hidden md:table-cell">
+                                            {new Date(order.date).toLocaleDateString()}
+                                        </td>
+                                        <td className="p-3 md:p-4">
+                                            <div className="font-medium text-xs md:text-sm">{order.customerName}</div>
+                                        </td>
+                                        <td className="p-3 md:p-4 font-bold text-gray-900 text-xs md:text-sm hidden md:table-cell">{order.total} TL</td>
+                                        <td className="p-3 md:p-4">
+                                            <OrderStatusForm orderId={order.id} currentStatus={order.status} />
+                                        </td>
+                                    </tr>
+                                ))}
+                                {passiveOrders.length === 0 && (
+                                    <tr>
+                                        <td colSpan={5} className="p-8 text-center text-gray-500">
+                                            Geçmiş sipariş bulunmuyor.
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </main>
     );
 }

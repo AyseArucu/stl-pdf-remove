@@ -11,7 +11,48 @@ export default async function ContactSettingsPage() {
                 <span className="text-purple-600">📍</span> İletişim ve Harita Ayarları
             </h1>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+            <div className="flex flex-col gap-8">
+                {/* Preview Section */}
+                <div className="w-full">
+                    <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                        <span>🗺️</span> Harita Önizleme
+                    </h2>
+                    <div className="bg-white p-2 rounded-xl shadow-sm border border-gray-100">
+                        <div className="relative w-full aspect-video bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
+                            {settings.mapUrl ? (
+                                settings.mapUrl.includes('/embed') ? (
+                                    <iframe
+                                        src={settings.mapUrl}
+                                        className="absolute inset-0 w-full h-full"
+                                        style={{ border: 0 }}
+                                        allowFullScreen
+                                        loading="lazy"
+                                        referrerPolicy="no-referrer-when-downgrade"
+                                    />
+                                ) : (
+                                    <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 text-gray-400">
+                                        <span className="text-4xl mb-3">🚫</span>
+                                        <p className="font-medium text-gray-600">Önizleme Kullanılamıyor</p>
+                                        <p className="text-sm mt-1">Geçersiz veya bozuk harita bağlantısı.</p>
+                                    </div>
+                                )
+                            ) : (
+                                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 text-gray-400 bg-gray-50/50">
+                                    <span className="text-4xl mb-3 opacity-30">🗺️</span>
+                                    <p className="font-medium text-gray-500">Henüz harita eklenmedi</p>
+                                    <p className="text-xs mt-1">Aşağıdan bir bağlantı ekleyin.</p>
+                                </div>
+                            )}
+                        </div>
+                        <div className="mt-3 px-2 pb-1">
+                            <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Görünecek Adres</div>
+                            <div className="p-3 bg-gray-50 rounded-lg border border-gray-100 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">
+                                {settings.address || <span className="text-gray-400 italic">Adres bilgisi girilmedi...</span>}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 {/* Form Section */}
                 <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                     <h2 className="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-50">
@@ -127,47 +168,6 @@ export default async function ContactSettingsPage() {
                             </button>
                         </div>
                     </form>
-                </div>
-
-                {/* Preview Section */}
-                <div className="sticky top-6">
-                    <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                        <span>🗺️</span> Harita Önizleme
-                    </h2>
-                    <div className="bg-white p-2 rounded-xl shadow-sm border border-gray-100">
-                        <div className="relative w-full aspect-square sm:aspect-video lg:aspect-square xl:aspect-video bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
-                            {settings.mapUrl ? (
-                                settings.mapUrl.includes('/embed') ? (
-                                    <iframe
-                                        src={settings.mapUrl}
-                                        className="absolute inset-0 w-full h-full"
-                                        style={{ border: 0 }}
-                                        allowFullScreen
-                                        loading="lazy"
-                                        referrerPolicy="no-referrer-when-downgrade"
-                                    />
-                                ) : (
-                                    <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 text-gray-400">
-                                        <span className="text-4xl mb-3">🚫</span>
-                                        <p className="font-medium text-gray-600">Önizleme Kullanılamıyor</p>
-                                        <p className="text-sm mt-1">Geçersiz veya bozuk harita bağlantısı.</p>
-                                    </div>
-                                )
-                            ) : (
-                                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 text-gray-400 bg-gray-50/50">
-                                    <span className="text-4xl mb-3 opacity-30">🗺️</span>
-                                    <p className="font-medium text-gray-500">Henüz harita eklenmedi</p>
-                                    <p className="text-xs mt-1">Sol taraftan bir bağlantı ekleyin.</p>
-                                </div>
-                            )}
-                        </div>
-                        <div className="mt-3 px-2 pb-1">
-                            <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Görünecek Adres</div>
-                            <div className="p-3 bg-gray-50 rounded-lg border border-gray-100 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">
-                                {settings.address || <span className="text-gray-400 italic">Adres bilgisi girilmedi...</span>}
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

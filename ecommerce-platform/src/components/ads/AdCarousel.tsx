@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { incrementAdView } from '@/app/actions/ads';
 
 type Ad = {
     id: string;
@@ -20,10 +21,21 @@ interface AdCarouselProps {
 export default function AdCarousel({ ads, className = '' }: AdCarouselProps) {
     const [currentIndex, setCurrentIndex] = useState(0);
 
+    const viewedAds = React.useRef<Set<string>>(new Set());
+
     useEffect(() => {
-        if (ads.length <= 1) return;
+        if (!ads || ads.length === 0) return;
 
         const currentAd = ads[currentIndex];
+
+        // Only increment if not already viewed in this session
+        if (!viewedAds.current.has(currentAd.id)) {
+            incrementAdView(currentAd.id);
+            viewedAds.current.add(currentAd.id);
+        }
+
+        if (ads.length <= 1) return;
+
         const duration = (currentAd.duration || 5) * 1000;
 
         const timer = setTimeout(() => {
@@ -31,7 +43,7 @@ export default function AdCarousel({ ads, className = '' }: AdCarouselProps) {
         }, duration);
 
         return () => clearTimeout(timer);
-    }, [currentIndex, ads.length, ads]);
+    }, [currentIndex, ads]);
 
     if (!ads || ads.length === 0) return null;
 

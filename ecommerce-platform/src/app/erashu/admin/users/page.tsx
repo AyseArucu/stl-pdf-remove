@@ -38,46 +38,49 @@ export default async function AdminUsersPage({ searchParams }: { searchParams: P
                 </div>
             </header>
 
-            <div style={{ backgroundColor: 'white', borderRadius: '12px', border: '1px solid var(--border)', overflow: 'hidden' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-                    <thead style={{ backgroundColor: '#f9fafb', borderBottom: '1px solid var(--border)' }}>
-                        <tr>
-                            <th style={{ padding: '1rem', fontWeight: 600 }}>ID</th>
-                            <th style={{ padding: '1rem', fontWeight: 600 }}>İsim Soyisim</th>
-                            <th style={{ padding: '1rem', fontWeight: 600 }}>E-posta</th>
-                            <th style={{ padding: '1rem', fontWeight: 600 }}>Rol</th>
-                            <th style={{ padding: '1rem', fontWeight: 600 }}>Durum</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {users.map((user) => (
-                            <tr key={user.id} style={{ borderBottom: '1px solid var(--border)' }}>
-                                <td style={{ padding: '1rem', color: 'var(--text-light)', fontSize: '0.9rem' }}>
-                                    #{user.id.substring(0, 8)}...
-                                </td>
-                                <td style={{ padding: '1rem', fontWeight: 500 }}>
-                                    {user.name}
-                                </td>
-                                <td style={{ padding: '1rem' }}>
-                                    {user.email}
-                                </td>
-                                <td style={{ padding: '1rem' }}>
-                                    <UserRoleSelect userId={user.id} currentRole={user.role as any} />
-                                </td>
-                                <td style={{ padding: '1rem' }}>
-                                    <UserStatusToggle userId={user.id} initialStatus={user.isActive ?? true} />
-                                </td>
-                            </tr>
-                        ))}
-                        {users.length === 0 && (
+            <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                <div className="overflow-x-auto">
+                    <table className="w-full text-left border-collapse">
+                        <thead className="bg-gray-50 border-b border-gray-100">
                             <tr>
-                                <td colSpan={5} style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-light)' }}>
-                                    Henüz kayıtlı üye bulunmuyor.
-                                </td>
+                                <th className="p-3 md:p-4 text-xs md:text-sm font-semibold text-gray-600">ID</th>
+                                <th className="p-3 md:p-4 text-xs md:text-sm font-semibold text-gray-600">İsim Soyisim</th>
+                                <th className="p-3 md:p-4 text-xs md:text-sm font-semibold text-gray-600 hidden md:table-cell">E-posta</th>
+                                <th className="p-3 md:p-4 text-xs md:text-sm font-semibold text-gray-600">Rol</th>
+                                <th className="p-3 md:p-4 text-xs md:text-sm font-semibold text-gray-600">Durum</th>
                             </tr>
-                        )}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100">
+                            {users.map((user) => (
+                                <tr key={user.id} className="hover:bg-gray-50 transition-colors">
+                                    <td className="p-3 md:p-4 text-xs md:text-sm text-gray-500">
+                                        #{user.id.substring(0, 8)}...
+                                    </td>
+                                    <td className="p-3 md:p-4 font-medium text-gray-900 text-xs md:text-sm">
+                                        {user.name}
+                                        <div className="text-xs text-gray-500 md:hidden">{user.email}</div>
+                                    </td>
+                                    <td className="p-3 md:p-4 text-xs md:text-sm text-gray-600 hidden md:table-cell">
+                                        {user.email}
+                                    </td>
+                                    <td className="p-3 md:p-4">
+                                        <UserRoleSelect userId={user.id} currentRole={user.role as any} />
+                                    </td>
+                                    <td className="p-3 md:p-4">
+                                        <UserStatusToggle userId={user.id} initialStatus={user.isActive ?? true} />
+                                    </td>
+                                </tr>
+                            ))}
+                            {users.length === 0 && (
+                                <tr>
+                                    <td colSpan={5} className="p-8 text-center text-gray-500">
+                                        Henüz kayıtlı üye bulunmuyor.
+                                    </td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </main>
     );

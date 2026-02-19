@@ -20,9 +20,9 @@ export function middleware(request: NextRequest) {
         try {
             const user = JSON.parse(session.value);
 
-            // Check for ADMIN role
-            if (user.role !== 'ADMIN') {
-                // Logged in but not admin, redirect to home
+            // Check for ADMIN, SUB_ADMIN or AUTHOR role
+            if (user.role !== 'ADMIN' && user.role !== 'SUB_ADMIN' && user.role !== 'AUTHOR') {
+                // Logged in but not authorized, redirect to home
                 return NextResponse.redirect(new URL('/', request.url));
             }
         } catch (e) {

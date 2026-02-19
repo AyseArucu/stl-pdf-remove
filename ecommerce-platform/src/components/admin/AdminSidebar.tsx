@@ -10,7 +10,13 @@ import { logout } from '@/app/erashu/admin/auth';
 import { useAdmin } from '@/context/AdminContext';
 import { ADMIN_MENU_ITEMS } from '@/lib/admin-menu-config';
 
-export default function AdminSidebar() {
+interface AdminSidebarProps {
+    isOpen?: boolean;
+    isMobile?: boolean;
+    onClose?: () => void;
+}
+
+export default function AdminSidebar({ isOpen = true, isMobile = false, onClose }: AdminSidebarProps) {
     const pathname = usePathname();
     const { t, permissions } = useAdmin();
 
@@ -20,8 +26,12 @@ export default function AdminSidebar() {
     }
 
     const menuItems = ADMIN_MENU_ITEMS;
-
     const isActive = (path: string) => pathname.startsWith(path);
+
+    // If mobile and not open, don't render (or hide via css)
+    // We'll use CSS transform for smooth transition if desired, or just conditional rendering.
+    // For simplicity with the existing style prop approach:
+    if (!isOpen && isMobile) return null;
 
     return (
         <aside style={{
@@ -31,15 +41,37 @@ export default function AdminSidebar() {
             display: 'flex',
             flexDirection: 'column',
             height: '100vh',
-            position: 'sticky',
-            top: 0
+            position: isMobile ? 'fixed' : 'sticky',
+            top: 0,
+            left: 0,
+            zIndex: 50,
+            overflowY: 'auto',
+            boxShadow: isMobile ? '4px 0 12px rgba(0,0,0,0.2)' : 'none'
         }}>
             {/* Logo Area */}
-            <div style={{ padding: '2rem 1.5rem', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-                <h2 style={{ fontFamily: 'Cinzel, serif', fontSize: '1.15rem', fontWeight: 800, margin: 0, letterSpacing: '0.5px' }}>
-                    Erashu Gaming
-                </h2>
-                <span style={{ fontSize: '0.75rem', opacity: 0.6, letterSpacing: '1.5px', textTransform: 'uppercase', marginTop: '4px', display: 'block' }}>Admin Panel</span>
+            <div style={{
+                padding: '2rem 1.5rem',
+                borderBottom: '1px solid rgba(255,255,255,0.1)',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+            }}>
+                <div>
+                    <h2 style={{ fontFamily: 'Cinzel, serif', fontSize: '1.15rem', fontWeight: 800, margin: 0, letterSpacing: '0.5px' }}>
+                        Erashu Gaming
+                    </h2>
+                    <span style={{ fontSize: '0.75rem', opacity: 0.6, letterSpacing: '1.5px', textTransform: 'uppercase', marginTop: '4px', display: 'block' }}>Admin Panel</span>
+                </div>
+
+                {/* Close Button for Mobile */}
+                {isMobile && (
+                    <button
+                        onClick={onClose}
+                        style={{ background: 'none', border: 'none', color: 'white', fontSize: '1.5rem', cursor: 'pointer' }}
+                    >
+                        ×
+                    </button>
+                )}
             </div>
 
             {/* Navigation */}
@@ -62,6 +94,7 @@ export default function AdminSidebar() {
                     <Link
                         key={item.href}
                         href={item.href}
+                        onClick={isMobile ? onClose : undefined} // Close on click on mobile
                         style={{
                             display: 'flex',
                             alignItems: 'center',

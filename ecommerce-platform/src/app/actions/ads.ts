@@ -108,3 +108,21 @@ export async function deleteAd(id: string) {
         return { success: false, error: 'Failed to delete ad' };
     }
 }
+
+export async function incrementAdView(id: string) {
+    try {
+        await prisma.advertisement.update({
+            where: { id },
+            data: {
+                viewCount: {
+                    increment: 1
+                }
+            } as any
+        });
+        // revalidatePath('/erashu/admin/ads'); // Removed to prevent potential frequent revalidations
+    } catch (error) {
+        console.error('Error incrementing ad view:', error);
+    }
+}
+
+

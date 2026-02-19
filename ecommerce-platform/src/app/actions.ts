@@ -1187,6 +1187,9 @@ export async function updateProfile(formData: FormData) {
     let imageUrl = user.image;
 
     if (imageFile && imageFile.size > 0) {
+        if (!process.env.BLOB_READ_WRITE_TOKEN) {
+            return { error: 'Sunucu yapılandırma hatası: BLOB_READ_WRITE_TOKEN eksik.' };
+        }
         try {
             const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
             const filename = imageFile.name.replace(/\s+/g, '-').toLowerCase();
@@ -1204,6 +1207,7 @@ export async function updateProfile(formData: FormData) {
             imageUrl = blob.url;
         } catch (e) {
             console.error('Profile image upload error', e);
+            return { error: `Profil resmi yüklenemedi: ${(e as Error).message}` };
         }
     }
 
@@ -1325,6 +1329,12 @@ export async function createStlModel(formData: FormData) {
         return { error: 'Lütfen gerekli alanları doldurun.' };
     }
 
+
+    // Check Token
+    if (!process.env.BLOB_READ_WRITE_TOKEN) {
+        return { error: 'Sunucu yapılandırma hatası: BLOB_READ_WRITE_TOKEN eksik.' };
+    }
+
     // Upload File (STL)
     let fileUrl = '';
     try {
@@ -1345,7 +1355,7 @@ export async function createStlModel(formData: FormData) {
         fileUrl = blob.url;
     } catch (e) {
         console.error('File upload error', e);
-        return { error: 'Dosya yüklenemedi.' };
+        return { error: `Dosya yüklenemedi: ${(e as Error).message}` };
     }
 
     // Upload Image (Preview)
@@ -1362,7 +1372,7 @@ export async function createStlModel(formData: FormData) {
         imageUrl = blob.url;
     } catch (e) {
         console.error('Preview image upload error', e);
-        return { error: 'Görsel yüklenemedi.' };
+        return { error: `Görsel yüklenemedi: ${(e as Error).message}` };
     }
 
     // Process Tags
@@ -1509,6 +1519,10 @@ export async function updateStlModel(formData: FormData) {
 
         // Handle File Update
         if (file && file.size > 0) {
+            if (!process.env.BLOB_READ_WRITE_TOKEN) {
+                return { error: 'Sunucu yapılandırma hatası: BLOB_READ_WRITE_TOKEN eksik.' };
+            }
+
             try {
                 // Delete old from Blob
                 if (existing.fileUrl && existing.fileUrl.includes('public.blob.vercel-storage.com')) {
@@ -1522,19 +1536,23 @@ export async function updateStlModel(formData: FormData) {
                 if (filename.endsWith('.3mf')) prefix = '3mf';
                 const finalName = `${prefix}-${uniqueSuffix}-${filename}`;
 
-                const blob = await put(finalName, file.stream(), {
+                const blob = await put(finalName, file, {
                     access: 'public',
                     addRandomSuffix: false
                 });
                 fileUrl = blob.url;
             } catch (e) {
                 console.error('File update error', e);
-                return { error: 'Dosya güncellenemedi.' };
+                return { error: `Dosya güncellenemedi: ${(e as Error).message}` };
             }
         }
 
         // Handle Image Update
         if (image && image.size > 0) {
+            if (!process.env.BLOB_READ_WRITE_TOKEN) {
+                return { error: 'Sunucu yapılandırma hatası: BLOB_READ_WRITE_TOKEN eksik.' };
+            }
+
             try {
                 // Delete old from Blob
                 if (existing.imageUrl && existing.imageUrl.includes('public.blob.vercel-storage.com')) {
@@ -1553,7 +1571,7 @@ export async function updateStlModel(formData: FormData) {
                 imageUrl = blob.url;
             } catch (e) {
                 console.error('Preview image update error', e);
-                return { error: 'Görsel güncellenemedi.' };
+                return { error: `Görsel güncellenemedi: ${(e as Error).message}` };
             }
         }
 
@@ -1630,6 +1648,11 @@ export async function createHeroSlide(formData: FormData) {
 
     if (!image || image.size === 0) return { error: 'Görsel zorunludur.' };
 
+
+    if (!process.env.BLOB_READ_WRITE_TOKEN) {
+        return { error: 'Sunucu yapılandırma hatası: BLOB_READ_WRITE_TOKEN eksik.' };
+    }
+
     let imageUrl = '';
     try {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
@@ -1644,7 +1667,7 @@ export async function createHeroSlide(formData: FormData) {
         imageUrl = blob.url;
     } catch (e) {
         console.error('Image upload error', e);
-        return { error: 'Görsel yüklenemedi.' };
+        return { error: `Görsel yüklenemedi: ${(e as Error).message}` };
     }
 
     const bgImage = formData.get('bgImage') as File;
@@ -1697,7 +1720,12 @@ export async function updateHeroSlide(formData: FormData) {
 
         let imageUrl = existing.imageUrl;
 
+
         if (image && image.size > 0) {
+            if (!process.env.BLOB_READ_WRITE_TOKEN) {
+                return { error: 'Sunucu yapılandırma hatası: BLOB_READ_WRITE_TOKEN eksik.' };
+            }
+
             try {
                 // Delete old from Blob if it was a blob URL
                 if (existing.imageUrl && existing.imageUrl.includes('public.blob.vercel-storage.com')) {
@@ -1716,7 +1744,7 @@ export async function updateHeroSlide(formData: FormData) {
                 imageUrl = blob.url;
             } catch (e) {
                 console.error('Image update error', e);
-                return { error: 'Görsel güncellenemedi.' };
+                return { error: `Görsel güncellenemedi: ${(e as Error).message}` };
             }
         }
 

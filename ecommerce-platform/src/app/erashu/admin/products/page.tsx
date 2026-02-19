@@ -56,165 +56,121 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
                 </div>
             </header>
 
-            <div style={{ backgroundColor: 'white', borderRadius: '12px', border: '1px solid var(--border)', overflow: 'hidden' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-                    <thead style={{ backgroundColor: '#f9fafb', borderBottom: '1px solid var(--border)' }}>
-                        <tr>
-                            <th style={{ padding: '1rem', fontWeight: 600 }}>Resim</th>
-                            <th style={{ padding: '1rem', fontWeight: 600 }}>Ürün Adı</th>
-                            <th style={{ padding: '1rem', fontWeight: 600 }}>Kategori</th>
-                            <th style={{ padding: '1rem', fontWeight: 600 }}>Alt Kategori</th>
-                            <th style={{ padding: '1rem', fontWeight: 600 }}>İndirim</th>
-                            <th style={{ padding: '1rem', fontWeight: 600 }}>Fiyat</th>
-                            <th style={{ padding: '1rem', fontWeight: 600 }}>Stok</th>
-                            <th style={{ padding: '1rem', fontWeight: 600 }}>Kargo</th>
-                            <th style={{ padding: '1rem', fontWeight: 600 }}>Durum</th>
-                            <th style={{ padding: '1rem', fontWeight: 600 }}>İşlemler</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {products.map((product) => {
-                            // Determine Category Display
-                            const cat = categoryMap.get(product.categoryId);
-                            let mainCategoryName = '-';
-                            let subCategoryName = '-';
+            <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                <div className="overflow-x-auto">
+                    <table className="w-full text-left border-collapse">
+                        <thead className="bg-gray-50 border-b border-gray-100">
+                            <tr>
+                                <th className="p-3 md:p-4 text-xs md:text-sm font-semibold text-gray-600">Resim</th>
+                                <th className="p-3 md:p-4 text-xs md:text-sm font-semibold text-gray-600">Ürün Adı</th>
+                                <th className="p-3 md:p-4 text-xs md:text-sm font-semibold text-gray-600 hidden md:table-cell">Kategori</th>
+                                <th className="p-3 md:p-4 text-xs md:text-sm font-semibold text-gray-600 hidden md:table-cell">İndirim</th>
+                                <th className="p-3 md:p-4 text-xs md:text-sm font-semibold text-gray-600">Fiyat</th>
+                                <th className="p-3 md:p-4 text-xs md:text-sm font-semibold text-gray-600 hidden md:table-cell">Stok</th>
+                                <th className="p-3 md:p-4 text-xs md:text-sm font-semibold text-gray-600">Durum</th>
+                                <th className="p-3 md:p-4 text-xs md:text-sm font-semibold text-gray-600">İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100">
+                            {products.map((product) => {
+                                // Determine Category Display
+                                const cat = categoryMap.get(product.categoryId);
+                                let mainCategoryName = '-';
+                                let subCategoryName = '-';
 
-                            if (cat) {
-                                if (cat.parentId) {
-                                    // It's a subcategory
-                                    subCategoryName = cat.name;
-                                    const parent = categoryMap.get(cat.parentId);
-                                    mainCategoryName = parent ? parent.name : '-';
-                                } else {
-                                    // It's a main category
-                                    mainCategoryName = cat.name;
+                                if (cat) {
+                                    if (cat.parentId) {
+                                        // It's a subcategory
+                                        subCategoryName = cat.name;
+                                        const parent = categoryMap.get(cat.parentId);
+                                        mainCategoryName = parent ? parent.name : '-';
+                                    } else {
+                                        // It's a main category
+                                        mainCategoryName = cat.name;
+                                    }
                                 }
-                            }
 
-                            const isDiscounted = (product.salePrice || 0) > 0 && (product.salePrice || 0) < product.price;
+                                const isDiscounted = (product.salePrice || 0) > 0 && (product.salePrice || 0) < product.price;
 
-                            return (
-                                <tr key={product.id} style={{ borderBottom: '1px solid var(--border)' }}>
-                                    <td style={{ padding: '1rem' }}>
-                                        <img src={product.imageUrl} alt="" style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }} />
-                                    </td>
-                                    <td style={{ padding: '1rem', fontWeight: 500 }}>{product.name}</td>
-                                    <td style={{ padding: '1rem' }}>
-                                        <span style={{
-                                            backgroundColor: '#f3f4f6',
-                                            padding: '0.25rem 0.75rem',
-                                            borderRadius: '99px',
-                                            fontSize: '0.85rem',
-                                            color: 'var(--text)'
-                                        }}>
-                                            {mainCategoryName}
-                                        </span>
-                                    </td>
-                                    <td style={{ padding: '1rem' }}>
-                                        <span style={{ fontSize: '0.9rem', color: 'var(--text-light)' }}>
-                                            {subCategoryName}
-                                        </span>
-                                    </td>
-                                    <td style={{ padding: '1rem' }}>
-                                        {isDiscounted ? (
-                                            <span style={{
-                                                backgroundColor: '#fee2e2',
-                                                color: '#ef4444',
-                                                padding: '0.25rem 0.75rem',
-                                                borderRadius: '99px',
-                                                fontSize: '0.75rem',
-                                                fontWeight: 600
-                                            }}>
-                                                İndirimli
-                                            </span>
-                                        ) : (
-                                            <span style={{ fontSize: '0.85rem', color: 'var(--text-light)' }}>Normal</span>
-                                        )}
-                                    </td>
-                                    <td style={{ padding: '1rem' }}>
-                                        {isDiscounted ? (
-                                            <div>
-                                                <div style={{ textDecoration: 'line-through', color: 'var(--text-light)', fontSize: '0.8rem' }}>{product.price} TL</div>
-                                                <div style={{ color: '#ef4444', fontWeight: 600 }}>{product.salePrice} TL</div>
+                                return (
+                                    <tr key={product.id} className="hover:bg-gray-50 transition-colors">
+                                        <td className="p-3 md:p-4">
+                                            <div className="w-10 h-10 md:w-12 md:h-12 bg-gray-100 rounded-lg border border-gray-200 overflow-hidden">
+                                                <img src={product.imageUrl} alt="" className="w-full h-full object-cover" />
                                             </div>
-                                        ) : (
-                                            <>{product.price} TL</>
-                                        )}
-                                    </td>
-                                    <td style={{ padding: '1rem' }}>
-                                        <span style={{ color: product.stock > 0 ? 'green' : 'red', fontWeight: product.stock === 0 ? 600 : 400 }}>
-                                            {product.stock === 0 ? 'Stok Yok' : product.stock}
-                                        </span>
-                                    </td>
-                                    <td style={{ padding: '1rem' }}>
-                                        {product.freeShipping ? (
-                                            <span style={{
-                                                backgroundColor: '#dcfce7',
-                                                color: '#15803d',
-                                                padding: '0.25rem 0.75rem',
-                                                borderRadius: '99px',
-                                                fontSize: '0.75rem',
-                                                fontWeight: 600
-                                            }}>
-                                                Ücretsiz
+                                        </td>
+                                        <td className="p-3 md:p-4">
+                                            <div className="font-medium text-gray-900 text-xs md:text-sm truncate max-w-[120px] md:max-w-xs">{product.name}</div>
+                                            <div className="text-xs text-gray-500 md:hidden">{product.stock} Stok</div>
+                                        </td>
+                                        <td className="p-3 md:p-4 text-xs md:text-sm text-gray-600 hidden md:table-cell">
+                                            <div className="flex flex-col">
+                                                <span className="font-medium">{mainCategoryName}</span>
+                                                <span className="text-xs text-gray-400">{subCategoryName}</span>
+                                            </div>
+                                        </td>
+                                        <td className="p-3 md:p-4 hidden md:table-cell">
+                                            {isDiscounted ? (
+                                                <span className="inline-flex px-2 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-600">
+                                                    İndirimli
+                                                </span>
+                                            ) : (
+                                                <span className="text-xs text-gray-400">Normal</span>
+                                            )}
+                                        </td>
+                                        <td className="p-3 md:p-4">
+                                            {isDiscounted ? (
+                                                <div className="flex flex-col">
+                                                    <span className="text-xs text-gray-400 line-through">{product.price} TL</span>
+                                                    <span className="text-sm font-bold text-red-600">{product.salePrice} TL</span>
+                                                </div>
+                                            ) : (
+                                                <span className="text-sm font-medium text-gray-900">{product.price} TL</span>
+                                            )}
+                                        </td>
+                                        <td className="p-3 md:p-4 text-xs md:text-sm text-gray-600 hidden md:table-cell">
+                                            <span className={`font-medium ${product.stock === 0 ? 'text-red-600' : 'text-green-600'}`}>
+                                                {product.stock === 0 ? 'Stok Yok' : product.stock}
                                             </span>
-                                        ) : (
-                                            <span style={{
-                                                backgroundColor: '#f3f4f6',
-                                                color: '#4b5563',
-                                                padding: '0.25rem 0.75rem',
-                                                borderRadius: '99px',
-                                                fontSize: '0.75rem',
-                                                fontWeight: 600
-                                            }}>
-                                                Ücretli
-                                            </span>
-                                        )}
-                                    </td>
-                                    <td style={{ padding: '1rem' }}>
-                                        <ProductStatusToggle productId={product.id} initialStatus={product.isActive ?? true} />
-                                    </td>
-                                    <td style={{ padding: '1rem' }}>
-                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                            <Link href={`/erashu/admin/products/${product.id}/edit`}
-                                                style={{
-                                                    textDecoration: 'none',
-                                                    padding: '0.5rem 1rem',
-                                                    borderRadius: '6px',
-                                                    border: '1px solid var(--border)',
-                                                    color: 'var(--text)',
-                                                    fontSize: '0.9rem'
-                                                }}>
-                                                Düzenle
-                                            </Link>
-                                            <form action={deleteProduct}>
-                                                <input type="hidden" name="id" value={product.id} />
-                                                <button type="submit" style={{
-                                                    backgroundColor: '#ef4444',
-                                                    color: 'white',
-                                                    border: 'none',
-                                                    padding: '0.5rem 1rem',
-                                                    borderRadius: '6px',
-                                                    cursor: 'pointer',
-                                                    fontSize: '0.9rem'
-                                                }}>
-                                                    Sil
-                                                </button>
-                                            </form>
-                                        </div>
+                                        </td>
+                                        <td className="p-3 md:p-4">
+                                            <ProductStatusToggle productId={product.id} initialStatus={product.isActive ?? true} />
+                                        </td>
+                                        <td className="p-3 md:p-4">
+                                            <div className="flex items-center gap-2">
+                                                <Link href={`/erashu/admin/products/${product.id}/edit`}
+                                                    className="p-1.5 md:p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition border border-transparent hover:border-blue-100"
+                                                >
+                                                    Düzenle
+                                                </Link>
+                                                <form action={deleteProduct}>
+                                                    <input type="hidden" name="id" value={product.id} />
+                                                    <button type="submit"
+                                                        className="p-1.5 md:p-2 text-red-600 hover:bg-red-50 rounded-lg transition border border-transparent hover:border-red-100"
+                                                        onClick={(e) => {
+                                                            if (!confirm('Silmek istediğinize emin misiniz?')) {
+                                                                e.preventDefault();
+                                                            }
+                                                        }}
+                                                    >
+                                                        Sil
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+                            {products.length === 0 && (
+                                <tr>
+                                    <td colSpan={10} className="p-8 text-center text-gray-500">
+                                        Henüz hiç ürün bulunmuyor.
                                     </td>
                                 </tr>
-                            );
-                        })}
-                        {products.length === 0 && (
-                            <tr>
-                                <td colSpan={10} style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-light)' }}>
-                                    Henüz hiç ürün bulunmuyor.
-                                </td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </main>
     );
