@@ -1752,6 +1752,10 @@ export async function updateHeroSlide(formData: FormData) {
         let bgImageUrl = existing.bgImageUrl;
 
         if (bgImage && bgImage.size > 0) {
+            if (!process.env.BLOB_READ_WRITE_TOKEN) {
+                return { error: 'Sunucu yapılandırma hatası: BLOB_READ_WRITE_TOKEN eksik.' };
+            }
+
             try {
                 // Delete old from Blob
                 if (existing.bgImageUrl && existing.bgImageUrl.includes('public.blob.vercel-storage.com')) {
@@ -1770,6 +1774,7 @@ export async function updateHeroSlide(formData: FormData) {
                 bgImageUrl = blob.url;
             } catch (e) {
                 console.error('BG Image update error', e);
+                return { error: `Arka plan görseli güncellenemedi: ${(e as Error).message}` };
             }
         }
 
