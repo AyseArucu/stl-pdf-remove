@@ -37,8 +37,8 @@ export default async function RootLayout({
     }
 
     return (
-        <html lang="tr">
-            <body className={inter.className}>
+        <html lang="tr" suppressHydrationWarning>
+            <body className={inter.className} suppressHydrationWarning>
                 <div className="min-h-screen bg-gray-50 flex flex-col">
                     <UserProvider user={user}>
                         <Providers>
